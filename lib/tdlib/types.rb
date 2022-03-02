@@ -13,6 +13,7 @@ module TD::Types
       'authenticationCodeTypeSms'                       => 'AuthenticationCodeType::Sms',
       'authenticationCodeTypeCall'                      => 'AuthenticationCodeType::Call',
       'authenticationCodeTypeFlashCall'                 => 'AuthenticationCodeType::FlashCall',
+      'authenticationCodeTypeMissedCall'                => 'AuthenticationCodeType::MissedCall',
       'authenticationCodeInfo'                          => 'AuthenticationCodeInfo',
       'emailAddressAuthenticationCodeInfo'              => 'EmailAddressAuthenticationCodeInfo',
       'textEntity'                                      => 'TextEntity',
@@ -46,11 +47,12 @@ module TD::Types
       'minithumbnail'                                   => 'Minithumbnail',
       'ThumbnailFormat'                                 => 'ThumbnailFormat',
       'thumbnailFormatJpeg'                             => 'ThumbnailFormat::Jpeg',
-      'thumbnailFormatPng'                              => 'ThumbnailFormat::Png',
-      'thumbnailFormatWebp'                             => 'ThumbnailFormat::Webp',
       'thumbnailFormatGif'                              => 'ThumbnailFormat::Gif',
-      'thumbnailFormatTgs'                              => 'ThumbnailFormat::Tgs',
       'thumbnailFormatMpeg4'                            => 'ThumbnailFormat::Mpeg4',
+      'thumbnailFormatPng'                              => 'ThumbnailFormat::Png',
+      'thumbnailFormatTgs'                              => 'ThumbnailFormat::Tgs',
+      'thumbnailFormatWebm'                             => 'ThumbnailFormat::Webm',
+      'thumbnailFormatWebp'                             => 'ThumbnailFormat::Webp',
       'thumbnail'                                       => 'Thumbnail',
       'MaskPoint'                                       => 'MaskPoint',
       'maskPointForehead'                               => 'MaskPoint::Forehead',
@@ -58,6 +60,11 @@ module TD::Types
       'maskPointMouth'                                  => 'MaskPoint::Mouth',
       'maskPointChin'                                   => 'MaskPoint::Chin',
       'maskPosition'                                    => 'MaskPosition',
+      'StickerType'                                     => 'StickerType',
+      'stickerTypeStatic'                               => 'StickerType::Static',
+      'stickerTypeAnimated'                             => 'StickerType::Animated',
+      'stickerTypeVideo'                                => 'StickerType::Video',
+      'stickerTypeMask'                                 => 'StickerType::Mask',
       'closedVectorPath'                                => 'ClosedVectorPath',
       'pollOption'                                      => 'PollOption',
       'PollType'                                        => 'PollType',
@@ -71,6 +78,7 @@ module TD::Types
       'video'                                           => 'Video',
       'videoNote'                                       => 'VideoNote',
       'voiceNote'                                       => 'VoiceNote',
+      'animatedEmoji'                                   => 'AnimatedEmoji',
       'contact'                                         => 'Contact',
       'location'                                        => 'Location',
       'venue'                                           => 'Venue',
@@ -84,7 +92,7 @@ module TD::Types
       'userTypeBot'                                     => 'UserType::Bot',
       'userTypeUnknown'                                 => 'UserType::Unknown',
       'botCommand'                                      => 'BotCommand',
-      'botInfo'                                         => 'BotInfo',
+      'botCommands'                                     => 'BotCommands',
       'chatLocation'                                    => 'ChatLocation',
       'animatedChatPhoto'                               => 'AnimatedChatPhoto',
       'chatPhoto'                                       => 'ChatPhoto',
@@ -132,6 +140,9 @@ module TD::Types
       'chatInviteLinkMember'                            => 'ChatInviteLinkMember',
       'chatInviteLinkMembers'                           => 'ChatInviteLinkMembers',
       'chatInviteLinkInfo'                              => 'ChatInviteLinkInfo',
+      'chatJoinRequest'                                 => 'ChatJoinRequest',
+      'chatJoinRequests'                                => 'ChatJoinRequests',
+      'chatJoinRequestsInfo'                            => 'ChatJoinRequestsInfo',
       'basicGroup'                                      => 'BasicGroup',
       'basicGroupFullInfo'                              => 'BasicGroupFullInfo',
       'supergroup'                                      => 'Supergroup',
@@ -153,13 +164,20 @@ module TD::Types
       'messageForwardOriginMessageImport'               => 'MessageForwardOrigin::MessageImport',
       'messageForwardInfo'                              => 'MessageForwardInfo',
       'messageReplyInfo'                                => 'MessageReplyInfo',
+      'messageReaction'                                 => 'MessageReaction',
       'messageInteractionInfo'                          => 'MessageInteractionInfo',
+      'unreadReaction'                                  => 'UnreadReaction',
       'MessageSendingState'                             => 'MessageSendingState',
       'messageSendingStatePending'                      => 'MessageSendingState::Pending',
       'messageSendingStateFailed'                       => 'MessageSendingState::Failed',
       'message'                                         => 'Message',
       'messages'                                        => 'Messages',
       'foundMessages'                                   => 'FoundMessages',
+      'messagePosition'                                 => 'MessagePosition',
+      'messagePositions'                                => 'MessagePositions',
+      'messageCalendarDay'                              => 'MessageCalendarDay',
+      'messageCalendar'                                 => 'MessageCalendar',
+      'sponsoredMessage'                                => 'SponsoredMessage',
       'NotificationSettingsScope'                       => 'NotificationSettingsScope',
       'notificationSettingsScopePrivateChats'           => 'NotificationSettingsScope::PrivateChats',
       'notificationSettingsScopeGroupChats'             => 'NotificationSettingsScope::GroupChats',
@@ -185,7 +203,7 @@ module TD::Types
       'chatSourceMtprotoProxy'                          => 'ChatSource::MtprotoProxy',
       'chatSourcePublicServiceAnnouncement'             => 'ChatSource::PublicServiceAnnouncement',
       'chatPosition'                                    => 'ChatPosition',
-      'voiceChat'                                       => 'VoiceChat',
+      'videoChat'                                       => 'VideoChat',
       'chat'                                            => 'Chat',
       'chats'                                           => 'Chats',
       'chatNearby'                                      => 'ChatNearby',
@@ -200,6 +218,7 @@ module TD::Types
       'chatActionBarReportAddBlock'                     => 'ChatActionBar::ReportAddBlock',
       'chatActionBarAddContact'                         => 'ChatActionBar::AddContact',
       'chatActionBarSharePhoneNumber'                   => 'ChatActionBar::SharePhoneNumber',
+      'chatActionBarJoinRequest'                        => 'ChatActionBar::JoinRequest',
       'KeyboardButtonType'                              => 'KeyboardButtonType',
       'keyboardButtonTypeText'                          => 'KeyboardButtonType::Text',
       'keyboardButtonTypeRequestPhoneNumber'            => 'KeyboardButtonType::RequestPhoneNumber',
@@ -214,6 +233,7 @@ module TD::Types
       'inlineKeyboardButtonTypeCallbackGame'            => 'InlineKeyboardButtonType::CallbackGame',
       'inlineKeyboardButtonTypeSwitchInline'            => 'InlineKeyboardButtonType::SwitchInline',
       'inlineKeyboardButtonTypeBuy'                     => 'InlineKeyboardButtonType::Buy',
+      'inlineKeyboardButtonTypeUser'                    => 'InlineKeyboardButtonType::User',
       'inlineKeyboardButton'                            => 'InlineKeyboardButton',
       'ReplyMarkup'                                     => 'ReplyMarkup',
       'replyMarkupRemoveKeyboard'                       => 'ReplyMarkup::RemoveKeyboard',
@@ -401,15 +421,16 @@ module TD::Types
       'messageLocation'                                 => 'MessageContent::Location',
       'messageVenue'                                    => 'MessageContent::Venue',
       'messageContact'                                  => 'MessageContent::Contact',
+      'messageAnimatedEmoji'                            => 'MessageContent::AnimatedEmoji',
       'messageDice'                                     => 'MessageContent::Dice',
       'messageGame'                                     => 'MessageContent::Game',
       'messagePoll'                                     => 'MessageContent::Poll',
       'messageInvoice'                                  => 'MessageContent::Invoice',
       'messageCall'                                     => 'MessageContent::Call',
-      'messageVoiceChatScheduled'                       => 'MessageContent::VoiceChatScheduled',
-      'messageVoiceChatStarted'                         => 'MessageContent::VoiceChatStarted',
-      'messageVoiceChatEnded'                           => 'MessageContent::VoiceChatEnded',
-      'messageInviteVoiceChatParticipants'              => 'MessageContent::InviteVoiceChatParticipants',
+      'messageVideoChatScheduled'                       => 'MessageContent::VideoChatScheduled',
+      'messageVideoChatStarted'                         => 'MessageContent::VideoChatStarted',
+      'messageVideoChatEnded'                           => 'MessageContent::VideoChatEnded',
+      'messageInviteVideoChatParticipants'              => 'MessageContent::InviteVideoChatParticipants',
       'messageBasicGroupChatCreate'                     => 'MessageContent::BasicGroupChatCreate',
       'messageSupergroupChatCreate'                     => 'MessageContent::SupergroupChatCreate',
       'messageChatChangeTitle'                          => 'MessageContent::ChatChangeTitle',
@@ -417,11 +438,13 @@ module TD::Types
       'messageChatDeletePhoto'                          => 'MessageContent::ChatDeletePhoto',
       'messageChatAddMembers'                           => 'MessageContent::ChatAddMembers',
       'messageChatJoinByLink'                           => 'MessageContent::ChatJoinByLink',
+      'messageChatJoinByRequest'                        => 'MessageContent::ChatJoinByRequest',
       'messageChatDeleteMember'                         => 'MessageContent::ChatDeleteMember',
       'messageChatUpgradeTo'                            => 'MessageContent::ChatUpgradeTo',
       'messageChatUpgradeFrom'                          => 'MessageContent::ChatUpgradeFrom',
       'messagePinMessage'                               => 'MessageContent::PinMessage',
       'messageScreenshotTaken'                          => 'MessageContent::ScreenshotTaken',
+      'messageChatSetTheme'                             => 'MessageContent::ChatSetTheme',
       'messageChatSetTtl'                               => 'MessageContent::ChatSetTtl',
       'messageCustomServiceAction'                      => 'MessageContent::CustomServiceAction',
       'messageGameScore'                                => 'MessageContent::GameScore',
@@ -446,11 +469,13 @@ module TD::Types
       'textEntityTypeItalic'                            => 'TextEntityType::Italic',
       'textEntityTypeUnderline'                         => 'TextEntityType::Underline',
       'textEntityTypeStrikethrough'                     => 'TextEntityType::Strikethrough',
+      'textEntityTypeSpoiler'                           => 'TextEntityType::Spoiler',
       'textEntityTypeCode'                              => 'TextEntityType::Code',
       'textEntityTypePre'                               => 'TextEntityType::Pre',
       'textEntityTypePreCode'                           => 'TextEntityType::PreCode',
       'textEntityTypeTextUrl'                           => 'TextEntityType::TextUrl',
       'textEntityTypeMentionName'                       => 'TextEntityType::MentionName',
+      'textEntityTypeMediaTimestamp'                    => 'TextEntityType::MediaTimestamp',
       'inputThumbnail'                                  => 'InputThumbnail',
       'MessageSchedulingState'                          => 'MessageSchedulingState',
       'messageSchedulingStateSendAtDate'                => 'MessageSchedulingState::SendAtDate',
@@ -486,12 +511,11 @@ module TD::Types
       'searchMessagesFilterPhotoAndVideo'               => 'SearchMessagesFilter::PhotoAndVideo',
       'searchMessagesFilterUrl'                         => 'SearchMessagesFilter::Url',
       'searchMessagesFilterChatPhoto'                   => 'SearchMessagesFilter::ChatPhoto',
-      'searchMessagesFilterCall'                        => 'SearchMessagesFilter::Call',
-      'searchMessagesFilterMissedCall'                  => 'SearchMessagesFilter::MissedCall',
       'searchMessagesFilterVideoNote'                   => 'SearchMessagesFilter::VideoNote',
       'searchMessagesFilterVoiceAndVideoNote'           => 'SearchMessagesFilter::VoiceAndVideoNote',
       'searchMessagesFilterMention'                     => 'SearchMessagesFilter::Mention',
       'searchMessagesFilterUnreadMention'               => 'SearchMessagesFilter::UnreadMention',
+      'searchMessagesFilterUnreadReaction'              => 'SearchMessagesFilter::UnreadReaction',
       'searchMessagesFilterFailedToSend'                => 'SearchMessagesFilter::FailedToSend',
       'searchMessagesFilterPinned'                      => 'SearchMessagesFilter::Pinned',
       'ChatAction'                                      => 'ChatAction',
@@ -502,11 +526,13 @@ module TD::Types
       'chatActionUploadingVoiceNote'                    => 'ChatAction::UploadingVoiceNote',
       'chatActionUploadingPhoto'                        => 'ChatAction::UploadingPhoto',
       'chatActionUploadingDocument'                     => 'ChatAction::UploadingDocument',
+      'chatActionChoosingSticker'                       => 'ChatAction::ChoosingSticker',
       'chatActionChoosingLocation'                      => 'ChatAction::ChoosingLocation',
       'chatActionChoosingContact'                       => 'ChatAction::ChoosingContact',
       'chatActionStartPlayingGame'                      => 'ChatAction::StartPlayingGame',
       'chatActionRecordingVideoNote'                    => 'ChatAction::RecordingVideoNote',
       'chatActionUploadingVideoNote'                    => 'ChatAction::UploadingVideoNote',
+      'chatActionWatchingAnimations'                    => 'ChatAction::WatchingAnimations',
       'chatActionCancel'                                => 'ChatAction::Cancel',
       'UserStatus'                                      => 'UserStatus',
       'userStatusEmpty'                                 => 'UserStatus::Empty',
@@ -540,14 +566,14 @@ module TD::Types
       'callStateHangingUp'                              => 'CallState::HangingUp',
       'callStateDiscarded'                              => 'CallState::Discarded',
       'callStateError'                                  => 'CallState::Error',
+      'GroupCallVideoQuality'                           => 'GroupCallVideoQuality',
+      'groupCallVideoQualityThumbnail'                  => 'GroupCallVideoQuality::Thumbnail',
+      'groupCallVideoQualityMedium'                     => 'GroupCallVideoQuality::Medium',
+      'groupCallVideoQualityFull'                       => 'GroupCallVideoQuality::Full',
       'groupCallRecentSpeaker'                          => 'GroupCallRecentSpeaker',
       'groupCall'                                       => 'GroupCall',
-      'groupCallPayloadFingerprint'                     => 'GroupCallPayloadFingerprint',
-      'groupCallPayload'                                => 'GroupCallPayload',
-      'groupCallJoinResponseCandidate'                  => 'GroupCallJoinResponseCandidate',
-      'GroupCallJoinResponse'                           => 'GroupCallJoinResponse',
-      'groupCallJoinResponseWebrtc'                     => 'GroupCallJoinResponse::Webrtc',
-      'groupCallJoinResponseStream'                     => 'GroupCallJoinResponse::Stream',
+      'groupCallVideoSourceGroup'                       => 'GroupCallVideoSourceGroup',
+      'groupCallParticipantVideoInfo'                   => 'GroupCallParticipantVideoInfo',
       'groupCallParticipant'                            => 'GroupCallParticipant',
       'CallProblem'                                     => 'CallProblem',
       'callProblemEcho'                                 => 'CallProblem::Echo',
@@ -561,6 +587,10 @@ module TD::Types
       'callProblemPixelatedVideo'                       => 'CallProblem::PixelatedVideo',
       'call'                                            => 'Call',
       'phoneNumberAuthenticationSettings'               => 'PhoneNumberAuthenticationSettings',
+      'addedReaction'                                   => 'AddedReaction',
+      'addedReactions'                                  => 'AddedReactions',
+      'availableReactions'                              => 'AvailableReactions',
+      'reaction'                                        => 'Reaction',
       'animations'                                      => 'Animations',
       'DiceStickers'                                    => 'DiceStickers',
       'diceStickersRegular'                             => 'DiceStickers::Regular',
@@ -605,36 +635,39 @@ module TD::Types
       'ChatEventAction'                                 => 'ChatEventAction',
       'chatEventMessageEdited'                          => 'ChatEventAction::MessageEdited',
       'chatEventMessageDeleted'                         => 'ChatEventAction::MessageDeleted',
-      'chatEventPollStopped'                            => 'ChatEventAction::PollStopped',
       'chatEventMessagePinned'                          => 'ChatEventAction::MessagePinned',
       'chatEventMessageUnpinned'                        => 'ChatEventAction::MessageUnpinned',
+      'chatEventPollStopped'                            => 'ChatEventAction::PollStopped',
       'chatEventMemberJoined'                           => 'ChatEventAction::MemberJoined',
       'chatEventMemberJoinedByInviteLink'               => 'ChatEventAction::MemberJoinedByInviteLink',
-      'chatEventMemberLeft'                             => 'ChatEventAction::MemberLeft',
+      'chatEventMemberJoinedByRequest'                  => 'ChatEventAction::MemberJoinedByRequest',
       'chatEventMemberInvited'                          => 'ChatEventAction::MemberInvited',
+      'chatEventMemberLeft'                             => 'ChatEventAction::MemberLeft',
       'chatEventMemberPromoted'                         => 'ChatEventAction::MemberPromoted',
       'chatEventMemberRestricted'                       => 'ChatEventAction::MemberRestricted',
-      'chatEventTitleChanged'                           => 'ChatEventAction::TitleChanged',
-      'chatEventPermissionsChanged'                     => 'ChatEventAction::PermissionsChanged',
+      'chatEventAvailableReactionsChanged'              => 'ChatEventAction::AvailableReactionsChanged',
       'chatEventDescriptionChanged'                     => 'ChatEventAction::DescriptionChanged',
-      'chatEventUsernameChanged'                        => 'ChatEventAction::UsernameChanged',
-      'chatEventPhotoChanged'                           => 'ChatEventAction::PhotoChanged',
-      'chatEventInvitesToggled'                         => 'ChatEventAction::InvitesToggled',
       'chatEventLinkedChatChanged'                      => 'ChatEventAction::LinkedChatChanged',
-      'chatEventSlowModeDelayChanged'                   => 'ChatEventAction::SlowModeDelayChanged',
-      'chatEventMessageTtlSettingChanged'               => 'ChatEventAction::MessageTtlSettingChanged',
-      'chatEventSignMessagesToggled'                    => 'ChatEventAction::SignMessagesToggled',
-      'chatEventStickerSetChanged'                      => 'ChatEventAction::StickerSetChanged',
       'chatEventLocationChanged'                        => 'ChatEventAction::LocationChanged',
+      'chatEventMessageTtlChanged'                      => 'ChatEventAction::MessageTtlChanged',
+      'chatEventPermissionsChanged'                     => 'ChatEventAction::PermissionsChanged',
+      'chatEventPhotoChanged'                           => 'ChatEventAction::PhotoChanged',
+      'chatEventSlowModeDelayChanged'                   => 'ChatEventAction::SlowModeDelayChanged',
+      'chatEventStickerSetChanged'                      => 'ChatEventAction::StickerSetChanged',
+      'chatEventTitleChanged'                           => 'ChatEventAction::TitleChanged',
+      'chatEventUsernameChanged'                        => 'ChatEventAction::UsernameChanged',
+      'chatEventHasProtectedContentToggled'             => 'ChatEventAction::HasProtectedContentToggled',
+      'chatEventInvitesToggled'                         => 'ChatEventAction::InvitesToggled',
       'chatEventIsAllHistoryAvailableToggled'           => 'ChatEventAction::IsAllHistoryAvailableToggled',
+      'chatEventSignMessagesToggled'                    => 'ChatEventAction::SignMessagesToggled',
       'chatEventInviteLinkEdited'                       => 'ChatEventAction::InviteLinkEdited',
       'chatEventInviteLinkRevoked'                      => 'ChatEventAction::InviteLinkRevoked',
       'chatEventInviteLinkDeleted'                      => 'ChatEventAction::InviteLinkDeleted',
-      'chatEventVoiceChatCreated'                       => 'ChatEventAction::VoiceChatCreated',
-      'chatEventVoiceChatDiscarded'                     => 'ChatEventAction::VoiceChatDiscarded',
-      'chatEventVoiceChatParticipantIsMutedToggled'     => 'ChatEventAction::VoiceChatParticipantIsMutedToggled',
-      'chatEventVoiceChatParticipantVolumeLevelChanged' => 'ChatEventAction::VoiceChatParticipantVolumeLevelChanged',
-      'chatEventVoiceChatMuteNewParticipantsToggled'    => 'ChatEventAction::VoiceChatMuteNewParticipantsToggled',
+      'chatEventVideoChatCreated'                       => 'ChatEventAction::VideoChatCreated',
+      'chatEventVideoChatEnded'                         => 'ChatEventAction::VideoChatEnded',
+      'chatEventVideoChatMuteNewParticipantsToggled'    => 'ChatEventAction::VideoChatMuteNewParticipantsToggled',
+      'chatEventVideoChatParticipantIsMutedToggled'     => 'ChatEventAction::VideoChatParticipantIsMutedToggled',
+      'chatEventVideoChatParticipantVolumeLevelChanged' => 'ChatEventAction::VideoChatParticipantVolumeLevelChanged',
       'chatEvent'                                       => 'ChatEvent',
       'chatEvents'                                      => 'ChatEvents',
       'chatEventLogFilters'                             => 'ChatEventLogFilters',
@@ -662,6 +695,7 @@ module TD::Types
       'BackgroundFill'                                  => 'BackgroundFill',
       'backgroundFillSolid'                             => 'BackgroundFill::Solid',
       'backgroundFillGradient'                          => 'BackgroundFill::Gradient',
+      'backgroundFillFreeformGradient'                  => 'BackgroundFill::FreeformGradient',
       'BackgroundType'                                  => 'BackgroundType',
       'backgroundTypeWallpaper'                         => 'BackgroundType::Wallpaper',
       'backgroundTypePattern'                           => 'BackgroundType::Pattern',
@@ -671,6 +705,8 @@ module TD::Types
       'InputBackground'                                 => 'InputBackground',
       'inputBackgroundLocal'                            => 'InputBackground::Local',
       'inputBackgroundRemote'                           => 'InputBackground::Remote',
+      'themeSettings'                                   => 'ThemeSettings',
+      'chatTheme'                                       => 'ChatTheme',
       'hashtags'                                        => 'Hashtags',
       'CanTransferOwnershipResult'                      => 'CanTransferOwnershipResult',
       'canTransferOwnershipResultOk'                    => 'CanTransferOwnershipResult::Ok',
@@ -683,6 +719,14 @@ module TD::Types
       'checkChatUsernameResultUsernameOccupied'         => 'CheckChatUsernameResult::UsernameOccupied',
       'checkChatUsernameResultPublicChatsTooMuch'       => 'CheckChatUsernameResult::PublicChatsTooMuch',
       'checkChatUsernameResultPublicGroupsUnavailable'  => 'CheckChatUsernameResult::PublicGroupsUnavailable',
+      'CheckStickerSetNameResult'                       => 'CheckStickerSetNameResult',
+      'checkStickerSetNameResultOk'                     => 'CheckStickerSetNameResult::Ok',
+      'checkStickerSetNameResultNameInvalid'            => 'CheckStickerSetNameResult::NameInvalid',
+      'checkStickerSetNameResultNameOccupied'           => 'CheckStickerSetNameResult::NameOccupied',
+      'ResetPasswordResult'                             => 'ResetPasswordResult',
+      'resetPasswordResultOk'                           => 'ResetPasswordResult::Ok',
+      'resetPasswordResultPending'                      => 'ResetPasswordResult::Pending',
+      'resetPasswordResultDeclined'                     => 'ResetPasswordResult::Declined',
       'MessageFileType'                                 => 'MessageFileType',
       'messageFileTypePrivate'                          => 'MessageFileType::Private',
       'messageFileTypeGroup'                            => 'MessageFileType::Group',
@@ -710,8 +754,10 @@ module TD::Types
       'pushMessageContentChatAddMembers'                => 'PushMessageContent::ChatAddMembers',
       'pushMessageContentChatChangePhoto'               => 'PushMessageContent::ChatChangePhoto',
       'pushMessageContentChatChangeTitle'               => 'PushMessageContent::ChatChangeTitle',
+      'pushMessageContentChatSetTheme'                  => 'PushMessageContent::ChatSetTheme',
       'pushMessageContentChatDeleteMember'              => 'PushMessageContent::ChatDeleteMember',
       'pushMessageContentChatJoinByLink'                => 'PushMessageContent::ChatJoinByLink',
+      'pushMessageContentChatJoinByRequest'             => 'PushMessageContent::ChatJoinByRequest',
       'pushMessageContentMessageForwards'               => 'PushMessageContent::MessageForwards',
       'pushMessageContentMediaAlbum'                    => 'PushMessageContent::MediaAlbum',
       'NotificationType'                                => 'NotificationType',
@@ -772,6 +818,31 @@ module TD::Types
       'chatReportReasonUnrelatedLocation'               => 'ChatReportReason::UnrelatedLocation',
       'chatReportReasonFake'                            => 'ChatReportReason::Fake',
       'chatReportReasonCustom'                          => 'ChatReportReason::Custom',
+      'InternalLinkType'                                => 'InternalLinkType',
+      'internalLinkTypeActiveSessions'                  => 'InternalLinkType::ActiveSessions',
+      'internalLinkTypeAuthenticationCode'              => 'InternalLinkType::AuthenticationCode',
+      'internalLinkTypeBackground'                      => 'InternalLinkType::Background',
+      'internalLinkTypeBotStart'                        => 'InternalLinkType::BotStart',
+      'internalLinkTypeBotStartInGroup'                 => 'InternalLinkType::BotStartInGroup',
+      'internalLinkTypeChangePhoneNumber'               => 'InternalLinkType::ChangePhoneNumber',
+      'internalLinkTypeChatInvite'                      => 'InternalLinkType::ChatInvite',
+      'internalLinkTypeFilterSettings'                  => 'InternalLinkType::FilterSettings',
+      'internalLinkTypeGame'                            => 'InternalLinkType::Game',
+      'internalLinkTypeLanguagePack'                    => 'InternalLinkType::LanguagePack',
+      'internalLinkTypeMessage'                         => 'InternalLinkType::Message',
+      'internalLinkTypeMessageDraft'                    => 'InternalLinkType::MessageDraft',
+      'internalLinkTypePassportDataRequest'             => 'InternalLinkType::PassportDataRequest',
+      'internalLinkTypePhoneNumberConfirmation'         => 'InternalLinkType::PhoneNumberConfirmation',
+      'internalLinkTypeProxy'                           => 'InternalLinkType::Proxy',
+      'internalLinkTypePublicChat'                      => 'InternalLinkType::PublicChat',
+      'internalLinkTypeQrCodeAuthentication'            => 'InternalLinkType::QrCodeAuthentication',
+      'internalLinkTypeSettings'                        => 'InternalLinkType::Settings',
+      'internalLinkTypeStickerSet'                      => 'InternalLinkType::StickerSet',
+      'internalLinkTypeTheme'                           => 'InternalLinkType::Theme',
+      'internalLinkTypeThemeSettings'                   => 'InternalLinkType::ThemeSettings',
+      'internalLinkTypeUnknownDeepLink'                 => 'InternalLinkType::UnknownDeepLink',
+      'internalLinkTypeUnsupportedProxy'                => 'InternalLinkType::UnsupportedProxy',
+      'internalLinkTypeVideoChat'                       => 'InternalLinkType::VideoChat',
       'messageLink'                                     => 'MessageLink',
       'messageLinkInfo'                                 => 'MessageLinkInfo',
       'filePart'                                        => 'FilePart',
@@ -832,9 +903,11 @@ module TD::Types
       'tMeUrls'                                         => 'TMeUrls',
       'SuggestedAction'                                 => 'SuggestedAction',
       'suggestedActionEnableArchiveAndMuteNewChats'     => 'SuggestedAction::EnableArchiveAndMuteNewChats',
+      'suggestedActionCheckPassword'                    => 'SuggestedAction::CheckPassword',
       'suggestedActionCheckPhoneNumber'                 => 'SuggestedAction::CheckPhoneNumber',
-      'suggestedActionSeeTicksHint'                     => 'SuggestedAction::SeeTicksHint',
+      'suggestedActionViewChecksHint'                   => 'SuggestedAction::ViewChecksHint',
       'suggestedActionConvertToBroadcastGroup'          => 'SuggestedAction::ConvertToBroadcastGroup',
+      'suggestedActionSetPassword'                      => 'SuggestedAction::SetPassword',
       'count'                                           => 'Count',
       'text'                                            => 'Text',
       'seconds'                                         => 'Seconds',
@@ -848,9 +921,7 @@ module TD::Types
       'proxyTypeMtproto'                                => 'ProxyType::Mtproto',
       'proxy'                                           => 'Proxy',
       'proxies'                                         => 'Proxies',
-      'InputSticker'                                    => 'InputSticker',
-      'inputStickerStatic'                              => 'InputSticker::Static',
-      'inputStickerAnimated'                            => 'InputSticker::Animated',
+      'inputSticker'                                    => 'InputSticker',
       'dateRange'                                       => 'DateRange',
       'statisticalValue'                                => 'StatisticalValue',
       'StatisticalGraph'                                => 'StatisticalGraph',
@@ -869,6 +940,14 @@ module TD::Types
       'VectorPathCommand'                               => 'VectorPathCommand',
       'vectorPathCommandLine'                           => 'VectorPathCommand::Line',
       'vectorPathCommandCubicBezierCurve'               => 'VectorPathCommand::CubicBezierCurve',
+      'BotCommandScope'                                 => 'BotCommandScope',
+      'botCommandScopeDefault'                          => 'BotCommandScope::Default',
+      'botCommandScopeAllPrivateChats'                  => 'BotCommandScope::AllPrivateChats',
+      'botCommandScopeAllGroupChats'                    => 'BotCommandScope::AllGroupChats',
+      'botCommandScopeAllChatAdministrators'            => 'BotCommandScope::AllChatAdministrators',
+      'botCommandScopeChat'                             => 'BotCommandScope::Chat',
+      'botCommandScopeChatAdministrators'               => 'BotCommandScope::ChatAdministrators',
+      'botCommandScopeChatMember'                       => 'BotCommandScope::ChatMember',
       'Update'                                          => 'Update',
       'updateAuthorizationState'                        => 'Update::AuthorizationState',
       'updateNewMessage'                                => 'Update::NewMessage',
@@ -881,6 +960,7 @@ module TD::Types
       'updateMessageInteractionInfo'                    => 'Update::MessageInteractionInfo',
       'updateMessageContentOpened'                      => 'Update::MessageContentOpened',
       'updateMessageMentionRead'                        => 'Update::MessageMentionRead',
+      'updateMessageUnreadReactions'                    => 'Update::MessageUnreadReactions',
       'updateMessageLiveLocationViewed'                 => 'Update::MessageLiveLocationViewed',
       'updateNewChat'                                   => 'Update::NewChat',
       'updateChatTitle'                                 => 'Update::ChatTitle',
@@ -888,28 +968,34 @@ module TD::Types
       'updateChatPermissions'                           => 'Update::ChatPermissions',
       'updateChatLastMessage'                           => 'Update::ChatLastMessage',
       'updateChatPosition'                              => 'Update::ChatPosition',
-      'updateChatIsMarkedAsUnread'                      => 'Update::ChatIsMarkedAsUnread',
-      'updateChatIsBlocked'                             => 'Update::ChatIsBlocked',
-      'updateChatHasScheduledMessages'                  => 'Update::ChatHasScheduledMessages',
-      'updateChatVoiceChat'                             => 'Update::ChatVoiceChat',
-      'updateChatDefaultDisableNotification'            => 'Update::ChatDefaultDisableNotification',
       'updateChatReadInbox'                             => 'Update::ChatReadInbox',
       'updateChatReadOutbox'                            => 'Update::ChatReadOutbox',
-      'updateChatUnreadMentionCount'                    => 'Update::ChatUnreadMentionCount',
-      'updateChatNotificationSettings'                  => 'Update::ChatNotificationSettings',
-      'updateScopeNotificationSettings'                 => 'Update::ScopeNotificationSettings',
-      'updateChatMessageTtlSetting'                     => 'Update::ChatMessageTtlSetting',
       'updateChatActionBar'                             => 'Update::ChatActionBar',
-      'updateChatReplyMarkup'                           => 'Update::ChatReplyMarkup',
+      'updateChatAvailableReactions'                    => 'Update::ChatAvailableReactions',
       'updateChatDraftMessage'                          => 'Update::ChatDraftMessage',
+      'updateChatMessageSender'                         => 'Update::ChatMessageSender',
+      'updateChatMessageTtl'                            => 'Update::ChatMessageTtl',
+      'updateChatNotificationSettings'                  => 'Update::ChatNotificationSettings',
+      'updateChatPendingJoinRequests'                   => 'Update::ChatPendingJoinRequests',
+      'updateChatReplyMarkup'                           => 'Update::ChatReplyMarkup',
+      'updateChatTheme'                                 => 'Update::ChatTheme',
+      'updateChatUnreadMentionCount'                    => 'Update::ChatUnreadMentionCount',
+      'updateChatUnreadReactionCount'                   => 'Update::ChatUnreadReactionCount',
+      'updateChatVideoChat'                             => 'Update::ChatVideoChat',
+      'updateChatDefaultDisableNotification'            => 'Update::ChatDefaultDisableNotification',
+      'updateChatHasProtectedContent'                   => 'Update::ChatHasProtectedContent',
+      'updateChatHasScheduledMessages'                  => 'Update::ChatHasScheduledMessages',
+      'updateChatIsBlocked'                             => 'Update::ChatIsBlocked',
+      'updateChatIsMarkedAsUnread'                      => 'Update::ChatIsMarkedAsUnread',
       'updateChatFilters'                               => 'Update::ChatFilters',
       'updateChatOnlineMemberCount'                     => 'Update::ChatOnlineMemberCount',
+      'updateScopeNotificationSettings'                 => 'Update::ScopeNotificationSettings',
       'updateNotification'                              => 'Update::Notification',
       'updateNotificationGroup'                         => 'Update::NotificationGroup',
       'updateActiveNotifications'                       => 'Update::ActiveNotifications',
       'updateHavePendingNotifications'                  => 'Update::HavePendingNotifications',
       'updateDeleteMessages'                            => 'Update::DeleteMessages',
-      'updateUserChatAction'                            => 'Update::UserChatAction',
+      'updateChatAction'                                => 'Update::ChatAction',
       'updateUserStatus'                                => 'Update::UserStatus',
       'updateUser'                                      => 'Update::User',
       'updateBasicGroup'                                => 'Update::BasicGroup',
@@ -937,11 +1023,14 @@ module TD::Types
       'updateFavoriteStickers'                          => 'Update::FavoriteStickers',
       'updateSavedAnimations'                           => 'Update::SavedAnimations',
       'updateSelectedBackground'                        => 'Update::SelectedBackground',
+      'updateChatThemes'                                => 'Update::ChatThemes',
       'updateLanguagePackStrings'                       => 'Update::LanguagePackStrings',
       'updateConnectionState'                           => 'Update::ConnectionState',
       'updateTermsOfService'                            => 'Update::TermsOfService',
       'updateUsersNearby'                               => 'Update::UsersNearby',
+      'updateReactions'                                 => 'Update::Reactions',
       'updateDiceEmojis'                                => 'Update::DiceEmojis',
+      'updateAnimatedEmojiMessageClicked'               => 'Update::AnimatedEmojiMessageClicked',
       'updateAnimationSearchParameters'                 => 'Update::AnimationSearchParameters',
       'updateSuggestedActions'                          => 'Update::SuggestedActions',
       'updateNewInlineQuery'                            => 'Update::NewInlineQuery',
@@ -955,6 +1044,7 @@ module TD::Types
       'updatePoll'                                      => 'Update::Poll',
       'updatePollAnswer'                                => 'Update::PollAnswer',
       'updateChatMember'                                => 'Update::ChatMember',
+      'updateNewChatJoinRequest'                        => 'Update::NewChatJoinRequest',
       'updates'                                         => 'Updates',
       'LogStream'                                       => 'LogStream',
       'logStreamDefault'                                => 'LogStream::Default',
@@ -1001,8 +1091,11 @@ module TD::Types
   
   %w[
     account_ttl
+    added_reaction
+    added_reactions
     address
     animated_chat_photo
+    animated_emoji
     animation
     animations
     audio
@@ -1011,6 +1104,7 @@ module TD::Types
     authorization_state
     auto_download_settings
     auto_download_settings_presets
+    available_reactions
     background
     background_fill
     background_type
@@ -1021,7 +1115,8 @@ module TD::Types
     basic_group
     basic_group_full_info
     bot_command
-    bot_info
+    bot_command_scope
+    bot_commands
     call
     call_discard_reason
     call_id
@@ -1051,6 +1146,9 @@ module TD::Types
     chat_invite_link_member
     chat_invite_link_members
     chat_invite_links
+    chat_join_request
+    chat_join_requests
+    chat_join_requests_info
     chat_list
     chat_lists
     chat_location
@@ -1072,10 +1170,12 @@ module TD::Types
     chat_statistics_inviter_info
     chat_statistics_message_interaction_info
     chat_statistics_message_sender_info
+    chat_theme
     chat_type
     chats
     chats_nearby
     check_chat_username_result
+    check_sticker_set_name_result
     closed_vector_path
     connected_website
     connected_websites
@@ -1109,12 +1209,11 @@ module TD::Types
     game_high_scores
     group_call
     group_call_id
-    group_call_join_response
-    group_call_join_response_candidate
     group_call_participant
-    group_call_payload
-    group_call_payload_fingerprint
+    group_call_participant_video_info
     group_call_recent_speaker
+    group_call_video_quality
+    group_call_video_source_group
     hashtags
     http_url
     identity_document
@@ -1136,6 +1235,7 @@ module TD::Types
     input_personal_document
     input_sticker
     input_thumbnail
+    internal_link_type
     invoice
     json_object_member
     json_value
@@ -1156,6 +1256,8 @@ module TD::Types
     mask_point
     mask_position
     message
+    message_calendar
+    message_calendar_day
     message_content
     message_copy_options
     message_file_type
@@ -1164,6 +1266,9 @@ module TD::Types
     message_interaction_info
     message_link
     message_link_info
+    message_position
+    message_positions
+    message_reaction
     message_reply_info
     message_scheduling_state
     message_send_options
@@ -1224,11 +1329,13 @@ module TD::Types
     public_chat_type
     push_message_content
     push_receiver_id
+    reaction
     recommended_chat_filter
     recommended_chat_filters
     recovery_email_address
     remote_file
     reply_markup
+    reset_password_result
     rich_text
     saved_credentials
     scope_notification_settings
@@ -1239,12 +1346,14 @@ module TD::Types
     session
     sessions
     shipping_option
+    sponsored_message
     statistical_graph
     statistical_value
     sticker
     sticker_set
     sticker_set_info
     sticker_sets
+    sticker_type
     stickers
     storage_statistics
     storage_statistics_by_chat
@@ -1265,9 +1374,11 @@ module TD::Types
     text_entity
     text_entity_type
     text_parse_mode
+    theme_settings
     thumbnail
     thumbnail_format
     top_chat_category
+    unread_reaction
     update
     updates
     user
@@ -1282,8 +1393,8 @@ module TD::Types
     vector_path_command
     venue
     video
+    video_chat
     video_note
-    voice_chat
     voice_note
     web_page
     web_page_instant_view

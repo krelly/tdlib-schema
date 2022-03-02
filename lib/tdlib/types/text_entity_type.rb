@@ -14,11 +14,13 @@ module TD::Types
       italic
       underline
       strikethrough
+      spoiler
       code
       pre
       pre_code
       text_url
       mention_name
+      media_timestamp
     ].each do |type|
       autoload TD::Types.camelize(type), "tdlib/types/text_entity_type/#{type}"
     end
