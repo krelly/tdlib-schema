@@ -12,10 +12,12 @@ module TD::Types
       filter_settings
       game
       language_pack
+      language_settings
       message
       message_draft
       passport_data_request
       phone_number_confirmation
+      privacy_and_security_settings
       proxy
       public_chat
       qr_code_authentication
@@ -25,6 +27,7 @@ module TD::Types
       theme_settings
       unknown_deep_link
       unsupported_proxy
+      user_phone_number
       video_chat
     ].each do |type|
       autoload TD::Types.camelize(type), "tdlib/types/internal_link_type/#{type}"

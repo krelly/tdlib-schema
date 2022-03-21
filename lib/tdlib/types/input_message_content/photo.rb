@@ -13,7 +13,7 @@ module TD::Types
   #   A non-zero TTL can be specified only in private chats.
   class InputMessageContent::Photo < InputMessageContent
     attribute :photo, TD::Types::InputFile
-    attribute :thumbnail, TD::Types::InputThumbnail.optional.default(nil)
+    attribute :thumbnail, TD::Types::InputThumbnail
     attribute :added_sticker_file_ids, TD::Types::Array.of(TD::Types::Coercible::Integer)
     attribute :width, TD::Types::Coercible::Integer
     attribute :height, TD::Types::Coercible::Integer

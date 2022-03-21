@@ -61,6 +61,10 @@ module TD::Types
       file
       file_generation_start
       file_generation_stop
+      file_downloads
+      file_added_to_downloads
+      file_download
+      file_removed_from_downloads
       call
       group_call
       group_call_participant

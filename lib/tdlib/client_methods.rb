@@ -68,10 +68,9 @@ module TD::ClientMethods
   
   # Adds a user to the contact list or edits an existing contact by their user identifier.
   #
-  # @param contact [TD::Types::Contact, nil] The contact to add or edit; phone number can be empty and needs to be
+  # @param contact [TD::Types::Contact, nil] The contact to add or edit; phone number may be empty and needs to be
   #   specified only if known, vCard is ignored.
-  # @param share_phone_number [Boolean] True, if the new contact needs to be allowed to see current user's phone
-  #   number.
+  # @param share_phone_number [Boolean] Pass true to share the current user's phone number with the new contact.
   #   A corresponding rule to {TD::Types::UserPrivacySetting::ShowPhoneNumber} will be added if needed.
   #   Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be
   #   asked to share their phone number.
@@ -103,6 +102,28 @@ module TD::ClientMethods
   def add_favorite_sticker(sticker:)
     broadcast('@type'   => 'addFavoriteSticker',
               'sticker' => sticker)
+  end
+  
+  # Adds a file from a message to the list of file downloads.
+  # Download progress and completion of the download will be notified through updateFile updates.
+  # If message database is used, the list of file downloads is persistent across application restarts.
+  # The downloading is independent from download using downloadFile, i.e.
+  # it continues if downloadFile is canceled or is used to download a part of the file.
+  #
+  # @param file_id [Integer] Identifier of the file to download.
+  # @param chat_id [Integer] Chat identifier of the message with the file.
+  # @param message_id [Integer] Message identifier.
+  # @param priority [Integer] Priority of the download (1-32).
+  #   The higher the priority, the earlier the file will be downloaded.
+  #   If the priorities of two files are equal, then the last one for which downloadFile/addFileToDownloads was called
+  #   will be downloaded first.
+  # @return [TD::Types::File]
+  def add_file_to_downloads(file_id:, chat_id:, message_id:, priority:)
+    broadcast('@type'      => 'addFileToDownloads',
+              'file_id'    => file_id,
+              'chat_id'    => chat_id,
+              'message_id' => message_id,
+              'priority'   => priority)
   end
   
   # Adds a local message to a chat.
@@ -152,7 +173,7 @@ module TD::ClientMethods
   #
   # @param server [TD::Types::String] Proxy server IP address.
   # @param port [Integer] Proxy server port.
-  # @param enable [Boolean] True, if the proxy needs to be enabled.
+  # @param enable [Boolean] Pass true to immediately enable the proxy.
   # @param type [TD::Types::ProxyType] Proxy type.
   # @return [TD::Types::Proxy]
   def add_proxy(server:, port:, enable:, type:)
@@ -220,7 +241,7 @@ module TD::ClientMethods
   #
   # @param callback_query_id [Integer] Identifier of the callback query.
   # @param text [TD::Types::String] Text of the answer.
-  # @param show_alert [Boolean] If true, an alert must be shown to the user instead of a toast notification.
+  # @param show_alert [Boolean] Pass true to show an alert to the user instead of a toast notification.
   # @param url [TD::Types::String] URL to be opened.
   # @param cache_time [Integer] Time during which the result of the query can be cached, in seconds.
   # @return [TD::Types::Ok]
@@ -247,7 +268,8 @@ module TD::ClientMethods
   # Sets the result of an inline query; for bots only.
   #
   # @param inline_query_id [Integer] Identifier of the inline query.
-  # @param is_personal [Boolean] True, if the result of the query can be cached for the specified user.
+  # @param is_personal [Boolean] Pass true if results may be cached and returned only for the user that sent the query.
+  #   By default, results may be returned to any user who sends the same query.
   # @param results [Array<TD::Types::InputInlineQueryResult>] The results of the query.
   # @param cache_time [Integer] Allowed time to cache the results of the query, in seconds.
   # @param next_offset [TD::Types::String] Offset for the next inline query; pass an empty string if there are no more
@@ -317,9 +339,9 @@ module TD::ClientMethods
   # Blocks an original sender of a message in the Replies chat.
   #
   # @param message_id [Integer] The identifier of an incoming message in the Replies chat.
-  # @param delete_message [Boolean] Pass true if the message must be deleted.
-  # @param delete_all_messages [Boolean] Pass true if all messages from the same sender must be deleted.
-  # @param report_spam [Boolean] Pass true if the sender must be reported to the Telegram moderators.
+  # @param delete_message [Boolean] Pass true to delete the message.
+  # @param delete_all_messages [Boolean] Pass true to delete all messages from the same sender.
+  # @param report_spam [Boolean] Pass true to report the sender to the Telegram moderators.
   # @return [TD::Types::Ok]
   def block_message_sender_from_replies(message_id:, delete_message:, delete_all_messages:, report_spam:)
     broadcast('@type'               => 'blockMessageSenderFromReplies',
@@ -564,9 +586,9 @@ module TD::ClientMethods
               'file_name' => file_name)
   end
   
-  # Clears draft messages in all chats.
+  # Clears message drafts in all chats.
   #
-  # @param exclude_secret_chats [Boolean] If true, local draft messages in secret chats will not be cleared.
+  # @param exclude_secret_chats [Boolean] Pass true to keep local message drafts in secret chats.
   # @return [TD::Types::Ok]
   def clear_all_draft_messages(exclude_secret_chats:)
     broadcast('@type'                => 'clearAllDraftMessages',
@@ -652,7 +674,7 @@ module TD::ClientMethods
   # Returns an existing chat corresponding to a known basic group.
   #
   # @param basic_group_id [Integer] Basic group identifier.
-  # @param force [Boolean] If true, the chat will be created without network request.
+  # @param force [Boolean] Pass true to create the chat without a network request.
   #   In this case all information about the chat except its type, title and photo can be incorrect.
   # @return [TD::Types::Chat]
   def create_basic_group_chat(basic_group_id:, force:)
@@ -665,7 +687,7 @@ module TD::ClientMethods
   #
   # @param user_id [Integer] Identifier of the user to be called.
   # @param protocol [TD::Types::CallProtocol] The call protocols supported by the application.
-  # @param is_video [Boolean] True, if a video call needs to be created.
+  # @param is_video [Boolean] Pass true to create a video call.
   # @return [TD::Types::CallId]
   def create_call(user_id:, protocol:, is_video:)
     broadcast('@type'    => 'createCall',
@@ -693,8 +715,9 @@ module TD::ClientMethods
   # @param expiration_date [Integer] Point in time (Unix timestamp) when the link will expire; pass 0 if never.
   # @param member_limit [Integer] The maximum number of chat members that can join the chat via the link
   #   simultaneously; 0-99999; pass 0 if not limited.
-  # @param creates_join_request [Boolean] True, if the link only creates join request.
-  #   If true, member_limit must not be specified.
+  # @param creates_join_request [Boolean] Pass true if users joining the chat via the link need to be approved by chat
+  #   administrators.
+  #   In this case, member_limit must be 0.
   # @return [TD::Types::ChatInviteLink]
   def create_chat_invite_link(chat_id:, name:, expiration_date:, member_limit:, creates_join_request:)
     broadcast('@type'                => 'createChatInviteLink',
@@ -753,11 +776,11 @@ module TD::ClientMethods
   # Returns the newly created chat.
   #
   # @param title [TD::Types::String] Title of the new chat; 1-128 characters.
-  # @param is_channel [Boolean] True, if a channel chat needs to be created.
+  # @param is_channel [Boolean] Pass true to create a channel chat.
   # @param description [TD::Types::String] Chat description; 0-255 characters.
   # @param location [TD::Types::ChatLocation] Chat location if a location-based supergroup is being created; pass null
   #   to create an ordinary supergroup chat.
-  # @param for_import [Boolean] True, if the supergroup is created for importing messages using importMessage.
+  # @param for_import [Boolean] Pass true to create a supergroup for importing messages using importMessage.
   # @return [TD::Types::Chat]
   def create_new_supergroup_chat(title:, is_channel:, description:, location:, for_import:)
     broadcast('@type'       => 'createNewSupergroupChat',
@@ -771,7 +794,7 @@ module TD::ClientMethods
   # Returns an existing chat corresponding to a given user.
   #
   # @param user_id [Integer] User identifier.
-  # @param force [Boolean] If true, the chat will be created without network request.
+  # @param force [Boolean] Pass true to create the chat without a network request.
   #   In this case all information about the chat except its type, title and photo can be incorrect.
   # @return [TD::Types::Chat]
   def create_private_chat(user_id:, force:)
@@ -792,7 +815,7 @@ module TD::ClientMethods
   # Returns an existing chat corresponding to a known supergroup or channel.
   #
   # @param supergroup_id [Integer] Supergroup or channel identifier.
-  # @param force [Boolean] If true, the chat will be created without network request.
+  # @param force [Boolean] Pass true to create the chat without a network request.
   #   In this case all information about the chat except its type, title and photo can be incorrect.
   # @return [TD::Types::Chat]
   def create_supergroup_chat(supergroup_id:, force:)
@@ -821,12 +844,15 @@ module TD::ClientMethods
   # @param start_date [Integer] Point in time (Unix timestamp) when the group call is supposed to be started by an
   #   administrator; 0 to start the video chat immediately.
   #   The date must be at least 10 seconds and at most 8 days in the future.
+  # @param is_rtmp_stream [Boolean] Pass true to create an RTMP stream instead of an ordinary video chat; requires
+  #   creator privileges.
   # @return [TD::Types::GroupCallId]
-  def create_video_chat(chat_id:, title: nil, start_date:)
-    broadcast('@type'      => 'createVideoChat',
-              'chat_id'    => chat_id,
-              'title'      => title,
-              'start_date' => start_date)
+  def create_video_chat(chat_id:, title: nil, start_date:, is_rtmp_stream:)
+    broadcast('@type'          => 'createVideoChat',
+              'chat_id'        => chat_id,
+              'title'          => title,
+              'start_date'     => start_date,
+              'is_rtmp_stream' => is_rtmp_stream)
   end
   
   # Deletes the account of the current user, deleting all information associated with the user from the server.
@@ -888,7 +914,7 @@ module TD::ClientMethods
   #   method can be applied to the chat.
   #
   # @param chat_id [Integer] Chat identifier.
-  # @param remove_from_chat_list [Boolean] Pass true if the chat needs to be removed from the chat list.
+  # @param remove_from_chat_list [Boolean] Pass true to remove the chat from all chat lists.
   # @param revoke [Boolean] Pass true to delete chat history for all users.
   # @return [TD::Types::Ok]
   def delete_chat_history(chat_id:, remove_from_chat_list:, revoke:)
@@ -1025,7 +1051,7 @@ module TD::ClientMethods
     broadcast('@type' => 'deleteSavedCredentials')
   end
   
-  # Deletes saved order info.
+  # Deletes saved order information.
   #
   # @return [TD::Types::Ok]
   def delete_saved_order_info
@@ -1054,9 +1080,9 @@ module TD::ClientMethods
   # Discards a call.
   #
   # @param call_id [Integer] Call identifier.
-  # @param is_disconnected [Boolean] True, if the user was disconnected.
+  # @param is_disconnected [Boolean] Pass true if the user was disconnected.
   # @param duration [Integer] The call duration, in seconds.
-  # @param is_video [Boolean] True, if the call was a video call.
+  # @param is_video [Boolean] Pass true if the call was a video call.
   # @param connection_id [Integer] Identifier of the connection used during the call.
   # @return [TD::Types::Ok]
   def discard_call(call_id:, is_disconnected:, duration:, is_video:, connection_id:)
@@ -1090,14 +1116,14 @@ module TD::ClientMethods
   # @param file_id [Integer] Identifier of the file to download.
   # @param priority [Integer] Priority of the download (1-32).
   #   The higher the priority, the earlier the file will be downloaded.
-  #   If the priorities of two files are equal, then the last one for which downloadFile was called will be downloaded
-  #   first.
+  #   If the priorities of two files are equal, then the last one for which downloadFile/addFileToDownloads was called
+  #   will be downloaded first.
   # @param offset [Integer] The starting position from which the file needs to be downloaded.
   # @param limit [Integer] Number of bytes which need to be downloaded starting from the "offset" position before the
   #   download will automatically be canceled; use 0 to download without a limit.
-  # @param synchronous [Boolean] If false, this request returns file state just after the download has been started.
-  #   If true, this request returns file state only after the download has succeeded, has failed, has been canceled or
-  #   a new downloadFile request with different offset/limit parameters was sent.
+  # @param synchronous [Boolean] Pass true to return response only after the file download has succeeded, has failed,
+  #   has been canceled, or a new downloadFile request with different offset/limit parameters was sent; pass false to return
+  #   file state immediately, just after the download has been started.
   # @return [TD::Types::File]
   def download_file(file_id:, priority:, offset:, limit:, synchronous:)
     broadcast('@type'       => 'downloadFile',
@@ -1131,8 +1157,9 @@ module TD::ClientMethods
   # @param expiration_date [Integer] Point in time (Unix timestamp) when the link will expire; pass 0 if never.
   # @param member_limit [Integer] The maximum number of chat members that can join the chat via the link
   #   simultaneously; 0-99999; pass 0 if not limited.
-  # @param creates_join_request [Boolean] True, if the link only creates join request.
-  #   If true, member_limit must not be specified.
+  # @param creates_join_request [Boolean] Pass true if users joining the chat via the link need to be approved by chat
+  #   administrators.
+  #   In this case, member_limit must be 0.
   # @return [TD::Types::ChatInviteLink]
   def edit_chat_invite_link(chat_id:, invite_link:, name:, expiration_date:, member_limit:, creates_join_request:)
     broadcast('@type'                => 'editChatInviteLink',
@@ -1345,7 +1372,7 @@ module TD::ClientMethods
   # @param proxy_id [Integer] Proxy identifier.
   # @param server [TD::Types::String] Proxy server IP address.
   # @param port [Integer] Proxy server port.
-  # @param enable [Boolean] True, if the proxy needs to be enabled.
+  # @param enable [Boolean] Pass true to immediately enable the proxy.
   # @param type [TD::Types::ProxyType] Proxy type.
   # @return [TD::Types::Proxy]
   def edit_proxy(proxy_id:, server:, port:, enable:, type:)
@@ -1420,12 +1447,11 @@ module TD::ClientMethods
   #   At most 100 messages can be forwarded simultaneously.
   # @param options [TD::Types::MessageSendOptions] Options to be used to send the messages; pass null to use default
   #   options.
-  # @param send_copy [Boolean] If true, content of the messages will be copied without reference to the original
-  #   sender.
+  # @param send_copy [Boolean] Pass true to copy content of the messages without reference to the original sender.
   #   Always true if the messages are forwarded to a secret chat or are local.
-  # @param remove_caption [Boolean] If true, media caption of message copies will be removed.
+  # @param remove_caption [Boolean] Pass true to remove media captions of message copies.
   #   Ignored if send_copy is false.
-  # @param only_preview [Boolean] If true, messages will not be forwarded and instead fake messages will be returned.
+  # @param only_preview [Boolean] Pass true to get fake messages instead of actually forwarding them.
   # @return [TD::Types::Messages]
   def forward_messages(chat_id:, from_chat_id:, message_ids:, options:, send_copy:, remove_caption:, only_preview:)
     broadcast('@type'          => 'forwardMessages',
@@ -1548,7 +1574,7 @@ module TD::ClientMethods
   
   # Returns backgrounds installed by the user.
   #
-  # @param for_dark_theme [Boolean] True, if the backgrounds must be ordered for dark theme.
+  # @param for_dark_theme [Boolean] Pass true to order returned backgrounds for a dark theme.
   # @return [TD::Types::Backgrounds]
   def get_backgrounds(for_dark_theme:)
     broadcast('@type'          => 'getBackgrounds',
@@ -1708,8 +1734,7 @@ module TD::ClientMethods
   #   If the offset is negative, the limit must be greater than or equal to -offset.
   #   For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified
   #   limit.
-  # @param only_local [Boolean] If true, returns only messages that are available locally without sending network
-  #   requests.
+  # @param only_local [Boolean] Pass true to get only messages that are available without sending network requests.
   # @return [TD::Types::Messages]
   def get_chat_history(chat_id:, from_message_id:, offset:, limit:, only_local:)
     broadcast('@type'           => 'getChatHistory',
@@ -1863,8 +1888,8 @@ module TD::ClientMethods
   # @param chat_id [Integer] Identifier of the chat in which to count messages.
   # @param filter [TD::Types::SearchMessagesFilter] Filter for message content;
   #   {TD::Types::SearchMessagesFilter::Empty} is unsupported in this function.
-  # @param return_local [Boolean] If true, returns count that is available locally without sending network requests,
-  #   returning -1 if the number of messages is unknown.
+  # @param return_local [Boolean] Pass true to get the number of messages without sending network requests, or -1 if
+  #   the number of messages is unknown locally.
   # @return [TD::Types::Count]
   def get_chat_message_count(chat_id:, filter:, return_local:)
     broadcast('@type'        => 'getChatMessageCount',
@@ -1877,7 +1902,7 @@ module TD::ClientMethods
   #
   # @param scope [TD::Types::NotificationSettingsScope] If specified, only chats from the scope will be returned; pass
   #   null to return chats from all scopes.
-  # @param compare_sound [Boolean] If true, also chats with non-default sound will be returned.
+  # @param compare_sound [Boolean] Pass true to include in the response chats with only non-default sound.
   # @return [TD::Types::Chats]
   def get_chat_notification_settings_exceptions(scope:, compare_sound:)
     broadcast('@type'         => 'getChatNotificationSettingsExceptions',
@@ -2059,8 +2084,8 @@ module TD::ClientMethods
   # Use the method getExternalLinkInfo to find whether a prior user confirmation is needed.
   #
   # @param link [TD::Types::String] The HTTP link.
-  # @param allow_write_access [Boolean] True, if the current user allowed the bot, returned in getExternalLinkInfo, to
-  #   send them messages.
+  # @param allow_write_access [Boolean] Pass true if the current user allowed the bot, returned in getExternalLinkInfo,
+  #   to send them messages.
   # @return [TD::Types::HttpUrl]
   def get_external_link(link:, allow_write_access:)
     broadcast('@type'              => 'getExternalLink',
@@ -2180,6 +2205,15 @@ module TD::ClientMethods
               'scale'         => scale,
               'channel_id'    => channel_id,
               'video_quality' => video_quality)
+  end
+  
+  # Returns information about available group call streams.
+  #
+  # @param group_call_id [Integer] Group call identifier.
+  # @return [TD::Types::GroupCallStreams]
+  def get_group_call_streams(group_call_id:)
+    broadcast('@type'         => 'getGroupCallStreams',
+              'group_call_id' => group_call_id)
   end
   
   # Returns a list of common group chats with a given user.
@@ -2328,7 +2362,7 @@ module TD::ClientMethods
   # This is an offline request if only_local is true.
   # Can be called before authorization.
   #
-  # @param only_local [Boolean] If true, returns only locally available information without sending network requests.
+  # @param only_local [Boolean] Pass true to get only locally available information without sending network requests.
   # @return [TD::Types::LocalizationTargetInfo]
   def get_localization_target_info(only_local:)
     broadcast('@type'      => 'getLocalizationTargetInfo',
@@ -2378,7 +2412,7 @@ module TD::ClientMethods
   # @param chat_id [Integer] Chat identifier of the message with the button.
   # @param message_id [Integer] Message identifier of the message with the button.
   # @param button_id [Integer] Button identifier.
-  # @param allow_write_access [Boolean] True, if the user allowed the bot to send them messages.
+  # @param allow_write_access [Boolean] Pass true to allow the bot to send messages to the current user.
   # @return [TD::Types::HttpUrl]
   def get_login_url(chat_id:, message_id:, button_id:, allow_write_access:)
     broadcast('@type'              => 'getLoginUrl',
@@ -2552,7 +2586,7 @@ module TD::ClientMethods
               'url'   => url)
   end
   
-  # Returns information about a message, if it is available locally without sending network request.
+  # Returns information about a message, if it is available without sending network request.
   # This is an offline request.
   #
   # @param chat_id [Integer] Identifier of the chat the message belongs to.
@@ -2665,7 +2699,7 @@ module TD::ClientMethods
   # Returns network data usage statistics.
   # Can be called before authorization.
   #
-  # @param only_current [Boolean] If true, returns only data for the current library launch.
+  # @param only_current [Boolean] Pass true to get statistics only for the current library launch.
   # @return [TD::Types::NetworkStatistics]
   def get_network_statistics(only_current:)
     broadcast('@type'        => 'getNetworkStatistics',
@@ -2927,7 +2961,8 @@ module TD::ClientMethods
     broadcast('@type' => 'getSavedAnimations')
   end
   
-  # Returns saved order info, if any.
+  # Returns saved order information.
+  # Returns a 404 error if there is no saved order information.
   #
   # @return [TD::Types::OrderInfo]
   def get_saved_order_info
@@ -3190,11 +3225,20 @@ module TD::ClientMethods
               'chat_id' => chat_id)
   end
   
+  # Returns RTMP URL for streaming to the chat; requires creator privileges.
+  #
+  # @param chat_id [Integer] Chat identifier.
+  # @return [TD::Types::RtmpUrl]
+  def get_video_chat_rtmp_url(chat_id:)
+    broadcast('@type'   => 'getVideoChatRtmpUrl',
+              'chat_id' => chat_id)
+  end
+  
   # Returns an instant view version of a web page if available.
   # Returns a 404 error if the web page has no instant view page.
   #
   # @param url [TD::Types::String] The web page URL.
-  # @param force_full [Boolean] If true, the full instant view for the web page will be returned.
+  # @param force_full [Boolean] Pass true to get full instant view for the web page.
   # @return [TD::Types::WebPageInstantView]
   def get_web_page_instant_view(url:, force_full:)
     broadcast('@type'      => 'getWebPageInstantView',
@@ -3291,8 +3335,8 @@ module TD::ClientMethods
   #   the call; pass null to join as self; video chats only.
   # @param audio_source_id [Integer] Caller audio channel synchronization source identifier; received from tgcalls.
   # @param payload [TD::Types::String] Group call join payload; received from tgcalls.
-  # @param is_muted [Boolean] True, if the user's microphone is muted.
-  # @param is_my_video_enabled [Boolean] True, if the user's video is enabled.
+  # @param is_muted [Boolean] Pass true to join the call with muted microphone.
+  # @param is_my_video_enabled [Boolean] Pass true if the user's video is enabled.
   # @param invite_hash [TD::Types::String] If non-empty, invite hash to be used to join the group call without being
   #   muted by administrators.
   # @return [TD::Types::Text]
@@ -3401,7 +3445,7 @@ module TD::ClientMethods
   # @param ttl [Integer] Limit on the time that has passed since the last time a file was accessed (or creation time
   #   for some filesystems).
   #   Pass -1 to use the default limit.
-  # @param count [Integer] Limit on the total count of files after deletion.
+  # @param count [Integer] Limit on the total number of files after deletion.
   #   Pass -1 to use the default limit.
   # @param immunity_delay [Integer] The amount of time after the creation of a file during which it can't be deleted,
   #   in seconds.
@@ -3461,9 +3505,9 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Identifier of the chat.
   # @param message_id [Integer] Identifier of the new pinned message.
-  # @param disable_notification [Boolean] True, if there must be no notification about the pinned message.
+  # @param disable_notification [Boolean] Pass true to disable notification about the pinned message.
   #   Notifications are always disabled in channels and private chats.
-  # @param only_for_self [Boolean] True, if the message needs to be pinned for one side only; private chats only.
+  # @param only_for_self [Boolean] Pass true to pin the message only for self; private chats only.
   # @return [TD::Types::Ok]
   def pin_chat_message(chat_id:, message_id:, disable_notification:, only_for_self:)
     broadcast('@type'                => 'pinChatMessage',
@@ -3488,8 +3532,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Chat identifier.
   # @param user_id [Integer] Identifier of the user that sent the request.
-  # @param approve [Boolean] True, if the request is approved.
-  #   Otherwise the request is declined.
+  # @param approve [Boolean] Pass true to approve the request; pass false to decline it.
   # @return [TD::Types::Ok]
   def process_chat_join_request(chat_id:, user_id:, approve:)
     broadcast('@type'   => 'processChatJoinRequest',
@@ -3505,8 +3548,7 @@ module TD::ClientMethods
   #   If empty, all join requests will be processed.
   #   Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for
   #   other links.
-  # @param approve [Boolean] True, if the requests are approved.
-  #   Otherwise the requests are declined.
+  # @param approve [Boolean] Pass true to approve all requests; pass false to decline them.
   # @return [TD::Types::Ok]
   def process_chat_join_requests(chat_id:, invite_link:, approve:)
     broadcast('@type'       => 'processChatJoinRequests',
@@ -3616,6 +3658,19 @@ module TD::ClientMethods
               'last_name'  => last_name)
   end
   
+  # Removes all files from the file download list.
+  #
+  # @param only_active [Boolean] Pass true to remove only active downloads, including paused.
+  # @param only_completed [Boolean] Pass true to remove only completed downloads.
+  # @param delete_from_cache [Boolean] Pass true to delete the file from the TDLib file cache.
+  # @return [TD::Types::Ok]
+  def remove_all_files_from_downloads(only_active:, only_completed:, delete_from_cache:)
+    broadcast('@type'             => 'removeAllFilesFromDownloads',
+              'only_active'       => only_active,
+              'only_completed'    => only_completed,
+              'delete_from_cache' => delete_from_cache)
+  end
+  
   # Removes background from the list of installed backgrounds.
   #
   # @param background_id [Integer] The background identifier.
@@ -3650,6 +3705,17 @@ module TD::ClientMethods
   def remove_favorite_sticker(sticker:)
     broadcast('@type'   => 'removeFavoriteSticker',
               'sticker' => sticker)
+  end
+  
+  # Removes a file from the file download list.
+  #
+  # @param file_id [Integer] Identifier of the downloaded file.
+  # @param delete_from_cache [Boolean] Pass true to delete the file from the TDLib file cache.
+  # @return [TD::Types::Ok]
+  def remove_file_from_downloads(file_id:, delete_from_cache:)
+    broadcast('@type'             => 'removeFileFromDownloads',
+              'file_id'           => file_id,
+              'delete_from_cache' => delete_from_cache)
   end
   
   # Removes an active notification from notification list.
@@ -3779,15 +3845,24 @@ module TD::ClientMethods
               'chat_id' => chat_id)
   end
   
+  # Replaces the current RTMP URL for streaming to the chat; requires creator privileges.
+  #
+  # @param chat_id [Integer] Chat identifier.
+  # @return [TD::Types::RtmpUrl]
+  def replace_video_chat_rtmp_url(chat_id:)
+    broadcast('@type'   => 'replaceVideoChatRtmpUrl',
+              'chat_id' => chat_id)
+  end
+  
   # Reports a chat to the Telegram moderators.
   # A chat can be reported only from the chat action bar, or if chat.can_be_reported.
   #
   # @param chat_id [Integer] Chat identifier.
-  # @param message_ids [Array<Integer>] Identifiers of reported messages, if any.
+  # @param message_ids [Array<Integer>, nil] Identifiers of reported messages; may be empty to report the whole chat.
   # @param reason [TD::Types::ChatReportReason] The reason for reporting the chat.
   # @param text [TD::Types::String] Additional report details; 0-1024 characters.
   # @return [TD::Types::Ok]
-  def report_chat(chat_id:, message_ids:, reason:, text:)
+  def report_chat(chat_id:, message_ids: nil, reason:, text:)
     broadcast('@type'       => 'reportChat',
               'chat_id'     => chat_id,
               'message_ids' => message_ids,
@@ -4002,7 +4077,7 @@ module TD::ClientMethods
   # @param limit [Integer] The maximum number of messages to be returned; up to 100.
   #   For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified
   #   limit.
-  # @param only_missed [Boolean] If true, returns only messages with missed/declined calls.
+  # @param only_missed [Boolean] Pass true to search only for messages with missed/declined calls.
   # @return [TD::Types::Messages]
   def search_call_messages(from_message_id:, limit:, only_missed:)
     broadcast('@type'           => 'searchCallMessages',
@@ -4130,7 +4205,7 @@ module TD::ClientMethods
   # Supported only if the file database is enabled.
   #
   # @param text [TD::Types::String] Text to search for.
-  # @param exact_match [Boolean] True, if only emojis, which exactly match text needs to be returned.
+  # @param exact_match [Boolean] Pass true if only emojis, which exactly match the text, needs to be returned.
   # @param input_language_codes [Array<TD::Types::String>, nil] List of possible IETF language tags of the user's input
   #   language; may be empty if unknown.
   # @return [TD::Types::Emojis]
@@ -4139,6 +4214,24 @@ module TD::ClientMethods
               'text'                 => text,
               'exact_match'          => exact_match,
               'input_language_codes' => input_language_codes)
+  end
+  
+  # Searches for files in the file download list or recently downloaded files from the list.
+  #
+  # @param query [TD::Types::String, nil] Query to search for; may be empty to return all downloaded files.
+  # @param only_active [Boolean] Pass true to search only for active downloads, including paused.
+  # @param only_completed [Boolean] Pass true to search only for completed downloads.
+  # @param offset [TD::Types::String] Offset of the first entry to return as received from the previous request; use
+  #   empty string to get the first chunk of results.
+  # @param limit [Integer] The maximum number of files to be returned.
+  # @return [TD::Types::FoundFileDownloads]
+  def search_file_downloads(query: nil, only_active:, only_completed:, offset:, limit:)
+    broadcast('@type'          => 'searchFileDownloads',
+              'query'          => query,
+              'only_active'    => only_active,
+              'only_completed' => only_completed,
+              'offset'         => offset,
+              'limit'          => limit)
   end
   
   # Searches for recently used hashtags by their prefix.
@@ -4200,6 +4293,18 @@ module TD::ClientMethods
               'filter'            => filter,
               'min_date'          => min_date,
               'max_date'          => max_date)
+  end
+  
+  # Searches for outgoing messages with content of the type messageDocument in all chats except secret chats.
+  # Returns the results in reverse chronological order.
+  #
+  # @param query [TD::Types::String] Query to search for in document file name and message caption.
+  # @param limit [Integer] The maximum number of messages to be returned; up to 100.
+  # @return [TD::Types::FoundMessages]
+  def search_outgoing_document_messages(query:, limit:)
+    broadcast('@type' => 'searchOutgoingDocumentMessages',
+              'query' => query,
+              'limit' => limit)
   end
   
   # Searches a public chat by its username.
@@ -4278,6 +4383,15 @@ module TD::ClientMethods
     broadcast('@type' => 'searchStickers',
               'emoji' => emoji,
               'limit' => limit)
+  end
+  
+  # Searches a user by their phone number.
+  #
+  # @param phone_number [TD::Types::String] Phone number to search for.
+  # @return [TD::Types::User]
+  def search_user_by_phone_number(phone_number:)
+    broadcast('@type'        => 'searchUserByPhoneNumber',
+              'phone_number' => phone_number)
   end
   
   # Invites a bot to a chat (if it is not yet a member) and sends it the /start command.
@@ -4389,8 +4503,8 @@ module TD::ClientMethods
   #   options.
   # @param query_id [Integer] Identifier of the inline query.
   # @param result_id [TD::Types::String] Identifier of the inline result.
-  # @param hide_via_bot [Boolean] If true, there will be no mention of a bot, via which the message is sent.
-  #   Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username") and
+  # @param hide_via_bot [Boolean] Pass true to hide the bot, via which the message is sent.
+  #   Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and
   #   GetOption("venue_search_bot_username").
   # @return [TD::Types::Message]
   def send_inline_query_result_message(chat_id:, message_thread_id:, reply_to_message_id:, options:, query_id:,
@@ -4438,14 +4552,17 @@ module TD::ClientMethods
   #   options.
   # @param input_message_contents [Array<TD::Types::InputMessageContent>] Contents of messages to be sent.
   #   At most 10 messages can be added to an album.
+  # @param only_preview [Boolean] Pass true to get fake messages instead of actually sending them.
   # @return [TD::Types::Messages]
-  def send_message_album(chat_id:, message_thread_id:, reply_to_message_id:, options:, input_message_contents:)
+  def send_message_album(chat_id:, message_thread_id:, reply_to_message_id:, options:, input_message_contents:,
+                         only_preview:)
     broadcast('@type'                  => 'sendMessageAlbum',
               'chat_id'                => chat_id,
               'message_thread_id'      => message_thread_id,
               'reply_to_message_id'    => reply_to_message_id,
               'options'                => options,
-              'input_message_contents' => input_message_contents)
+              'input_message_contents' => input_message_contents,
+              'only_preview'           => only_preview)
   end
   
   # Sends a Telegram Passport authorization form, effectively sharing data with the service.
@@ -4561,7 +4678,7 @@ module TD::ClientMethods
   #   backgrounds or to remove the current background.
   # @param type [TD::Types::BackgroundType] Background type; pass null to use the default type of the remote background
   #   or to remove the current background.
-  # @param for_dark_theme [Boolean] True, if the background is chosen for dark theme.
+  # @param for_dark_theme [Boolean] Pass true if the background is changed for a dark theme.
   # @return [TD::Types::Background]
   def set_background(background:, type:, for_dark_theme:)
     broadcast('@type'          => 'setBackground',
@@ -4597,7 +4714,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Identifier of the chat.
   # @param available_reactions [Array<TD::Types::String>] New list of reactions, available in the chat.
-  #   All reactions must be active and order of the reactions must be the same as in updateReactions.
+  #   All reactions must be active.
   # @return [TD::Types::Ok]
   def set_chat_available_reactions(chat_id:, available_reactions:)
     broadcast('@type'               => 'setChatAvailableReactions',
@@ -4862,7 +4979,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] The chat to which the message with the game belongs.
   # @param message_id [Integer] Identifier of the message.
-  # @param edit_message [Boolean] True, if the message needs to be edited.
+  # @param edit_message [Boolean] Pass true to edit the game message to include the current scoreboard.
   # @param user_id [Integer] User identifier.
   # @param score [Integer] The new score.
   # @param force [Boolean] Pass true to update the score even if it decreases.
@@ -4883,7 +5000,7 @@ module TD::ClientMethods
   # @param group_call_id [Integer] Group call identifier.
   # @param audio_source [Integer] Group call participant's synchronization audio source identifier, or 0 for the
   #   current user.
-  # @param is_speaking [Boolean] True, if the user is speaking.
+  # @param is_speaking [Boolean] Pass true if the user is speaking.
   # @return [TD::Types::Ok]
   def set_group_call_participant_is_speaking(group_call_id:, audio_source:, is_speaking:)
     broadcast('@type'         => 'setGroupCallParticipantIsSpeaking',
@@ -4932,7 +5049,7 @@ module TD::ClientMethods
   # Updates the game score of the specified user in a game; for bots only.
   #
   # @param inline_message_id [TD::Types::String] Inline message identifier.
-  # @param edit_message [Boolean] True, if the message needs to be edited.
+  # @param edit_message [Boolean] Pass true to edit the game message to include the current scoreboard.
   # @param user_id [Integer] User identifier.
   # @param score [Integer] The new score.
   # @param force [Boolean] Pass true to update the score even if it decreases.
@@ -4997,8 +5114,8 @@ module TD::ClientMethods
   # @param chat_id [Integer] Identifier of the chat to which the message belongs.
   # @param message_id [Integer] Identifier of the message.
   # @param reaction [TD::Types::String] Text representation of the new chosen reaction.
-  #   Can be an empty string or the currently chosen reaction to remove the reaction.
-  # @param is_big [Boolean] True, if the reaction is added with a big animation.
+  #   Can be an empty string or the currently chosen non-big reaction to remove the reaction.
+  # @param is_big [Boolean] Pass true if the reaction is added with a big animation.
   # @return [TD::Types::Ok]
   def set_message_reaction(chat_id:, message_id:, reaction:, is_big:)
     broadcast('@type'      => 'setMessageReaction',
@@ -5079,7 +5196,7 @@ module TD::ClientMethods
   # @param old_password [TD::Types::String] Previous password of the user.
   # @param new_password [TD::Types::String, nil] New password of the user; may be empty to remove the password.
   # @param new_hint [TD::Types::String, nil] New password hint; may be empty.
-  # @param set_recovery_email_address [Boolean] Pass true if the recovery email address must be changed.
+  # @param set_recovery_email_address [Boolean] Pass true to change also the recovery email address.
   # @param new_recovery_email_address [TD::Types::String, nil] New recovery email address; may be empty.
   # @return [TD::Types::PasswordState]
   def set_password(old_password:, new_password: nil, new_hint: nil, set_recovery_email_address: false,
@@ -5341,6 +5458,15 @@ module TD::ClientMethods
               'session_id' => session_id)
   end
   
+  # Changes pause state of all files in the file download list.
+  #
+  # @param are_paused [Boolean] Pass true to pause all downloads; pass false to unpause them.
+  # @return [TD::Types::Ok]
+  def toggle_all_downloads_are_paused(are_paused:)
+    broadcast('@type'      => 'toggleAllDownloadsArePaused',
+              'are_paused' => are_paused)
+  end
+  
   # Changes the value of the default disable_notification parameter, used when a message is sent to a chat.
   #
   # @param chat_id [Integer] Chat identifier.
@@ -5357,7 +5483,7 @@ module TD::ClientMethods
   # Requires owner privileges.
   #
   # @param chat_id [Integer] Chat identifier.
-  # @param has_protected_content [Boolean] True, if chat content can't be saved locally, forwarded, or copied.
+  # @param has_protected_content [Boolean] New value of has_protected_content.
   # @return [TD::Types::Ok]
   def toggle_chat_has_protected_content(chat_id:, has_protected_content:)
     broadcast('@type'                 => 'toggleChatHasProtectedContent',
@@ -5382,13 +5508,24 @@ module TD::ClientMethods
   #
   # @param chat_list [TD::Types::ChatList] Chat list in which to change the pinned state of the chat.
   # @param chat_id [Integer] Chat identifier.
-  # @param is_pinned [Boolean] True, if the chat is pinned.
+  # @param is_pinned [Boolean] Pass true to pin the chat; pass false to unpin it.
   # @return [TD::Types::Ok]
   def toggle_chat_is_pinned(chat_list:, chat_id:, is_pinned:)
     broadcast('@type'     => 'toggleChatIsPinned',
               'chat_list' => chat_list,
               'chat_id'   => chat_id,
               'is_pinned' => is_pinned)
+  end
+  
+  # Changes pause state of a file in the file download list.
+  #
+  # @param file_id [Integer] Identifier of the downloaded file.
+  # @param is_paused [Boolean] Pass true if the download is paused.
+  # @return [TD::Types::Ok]
+  def toggle_download_is_paused(file_id:, is_paused:)
+    broadcast('@type'     => 'toggleDownloadIsPaused',
+              'file_id'   => file_id,
+              'is_paused' => is_paused)
   end
   
   # Toggles whether the current user will receive a notification when the group call will start; scheduled group calls
@@ -5456,7 +5593,7 @@ module TD::ClientMethods
   #
   # @param group_call_id [Integer] Group call identifier.
   # @param participant_id [TD::Types::MessageSender] Participant identifier.
-  # @param is_muted [Boolean] Pass true if the user must be muted and false otherwise.
+  # @param is_muted [Boolean] Pass true to mute the user; pass false to unmute the them.
   # @return [TD::Types::Ok]
   def toggle_group_call_participant_is_muted(group_call_id:, participant_id:, is_muted:)
     broadcast('@type'          => 'toggleGroupCallParticipantIsMuted',
@@ -5491,7 +5628,7 @@ module TD::ClientMethods
   # Toggles whether a session can accept incoming calls.
   #
   # @param session_id [Integer] Session identifier.
-  # @param can_accept_calls [Boolean] True, if incoming calls can be accepted by the session.
+  # @param can_accept_calls [Boolean] Pass true to allow accepting incoming calls by the session; pass false otherwise.
   # @return [TD::Types::Ok]
   def toggle_session_can_accept_calls(session_id:, can_accept_calls:)
     broadcast('@type'            => 'toggleSessionCanAcceptCalls',
@@ -5502,7 +5639,8 @@ module TD::ClientMethods
   # Toggles whether a session can accept incoming secret chats.
   #
   # @param session_id [Integer] Session identifier.
-  # @param can_accept_secret_chats [Boolean] True, if incoming secret chats can be accepted by the session.
+  # @param can_accept_secret_chats [Boolean] Pass true to allow accepring secret chats by the session; pass false
+  #   otherwise.
   # @return [TD::Types::Ok]
   def toggle_session_can_accept_secret_chats(session_id:, can_accept_secret_chats:)
     broadcast('@type'                   => 'toggleSessionCanAcceptSecretChats',
@@ -5645,7 +5783,7 @@ module TD::ClientMethods
   # @param chat_id [Integer] Chat identifier of the Invoice message.
   # @param message_id [Integer] Message identifier.
   # @param order_info [TD::Types::OrderInfo, nil] The order information, provided by the user; pass null if empty.
-  # @param allow_save [Boolean] True, if the order information can be saved.
+  # @param allow_save [Boolean] Pass true to save the order information.
   # @return [TD::Types::ValidatedOrderInfo]
   def validate_order_info(chat_id:, message_id:, order_info: nil, allow_save:)
     broadcast('@type'      => 'validateOrderInfo',
@@ -5664,7 +5802,7 @@ module TD::ClientMethods
   # @param chat_id [Integer] Chat identifier.
   # @param message_thread_id [Integer] If not 0, a message thread identifier in which the messages are being viewed.
   # @param message_ids [Array<Integer>] The identifiers of the messages being viewed.
-  # @param force_read [Boolean] True, if messages in closed chats must be marked as read by the request.
+  # @param force_read [Boolean] Pass true to mark as read the specified messages even the chat is closed.
   # @return [TD::Types::Ok]
   def view_messages(chat_id:, message_thread_id:, message_ids:, force_read:)
     broadcast('@type'             => 'viewMessages',

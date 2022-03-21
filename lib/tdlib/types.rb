@@ -178,6 +178,9 @@ module TD::Types
       'messageCalendarDay'                              => 'MessageCalendarDay',
       'messageCalendar'                                 => 'MessageCalendar',
       'sponsoredMessage'                                => 'SponsoredMessage',
+      'fileDownload'                                    => 'FileDownload',
+      'downloadedFileCounts'                            => 'DownloadedFileCounts',
+      'foundFileDownloads'                              => 'FoundFileDownloads',
       'NotificationSettingsScope'                       => 'NotificationSettingsScope',
       'notificationSettingsScopePrivateChats'           => 'NotificationSettingsScope::PrivateChats',
       'notificationSettingsScopeGroupChats'             => 'NotificationSettingsScope::GroupChats',
@@ -570,6 +573,9 @@ module TD::Types
       'groupCallVideoQualityThumbnail'                  => 'GroupCallVideoQuality::Thumbnail',
       'groupCallVideoQualityMedium'                     => 'GroupCallVideoQuality::Medium',
       'groupCallVideoQualityFull'                       => 'GroupCallVideoQuality::Full',
+      'groupCallStream'                                 => 'GroupCallStream',
+      'groupCallStreams'                                => 'GroupCallStreams',
+      'rtmpUrl'                                         => 'RtmpUrl',
       'groupCallRecentSpeaker'                          => 'GroupCallRecentSpeaker',
       'groupCall'                                       => 'GroupCall',
       'groupCallVideoSourceGroup'                       => 'GroupCallVideoSourceGroup',
@@ -817,6 +823,8 @@ module TD::Types
       'chatReportReasonCopyright'                       => 'ChatReportReason::Copyright',
       'chatReportReasonUnrelatedLocation'               => 'ChatReportReason::UnrelatedLocation',
       'chatReportReasonFake'                            => 'ChatReportReason::Fake',
+      'chatReportReasonIllegalDrugs'                    => 'ChatReportReason::IllegalDrugs',
+      'chatReportReasonPersonalDetails'                 => 'ChatReportReason::PersonalDetails',
       'chatReportReasonCustom'                          => 'ChatReportReason::Custom',
       'InternalLinkType'                                => 'InternalLinkType',
       'internalLinkTypeActiveSessions'                  => 'InternalLinkType::ActiveSessions',
@@ -829,10 +837,12 @@ module TD::Types
       'internalLinkTypeFilterSettings'                  => 'InternalLinkType::FilterSettings',
       'internalLinkTypeGame'                            => 'InternalLinkType::Game',
       'internalLinkTypeLanguagePack'                    => 'InternalLinkType::LanguagePack',
+      'internalLinkTypeLanguageSettings'                => 'InternalLinkType::LanguageSettings',
       'internalLinkTypeMessage'                         => 'InternalLinkType::Message',
       'internalLinkTypeMessageDraft'                    => 'InternalLinkType::MessageDraft',
       'internalLinkTypePassportDataRequest'             => 'InternalLinkType::PassportDataRequest',
       'internalLinkTypePhoneNumberConfirmation'         => 'InternalLinkType::PhoneNumberConfirmation',
+      'internalLinkTypePrivacyAndSecuritySettings'      => 'InternalLinkType::PrivacyAndSecuritySettings',
       'internalLinkTypeProxy'                           => 'InternalLinkType::Proxy',
       'internalLinkTypePublicChat'                      => 'InternalLinkType::PublicChat',
       'internalLinkTypeQrCodeAuthentication'            => 'InternalLinkType::QrCodeAuthentication',
@@ -842,6 +852,7 @@ module TD::Types
       'internalLinkTypeThemeSettings'                   => 'InternalLinkType::ThemeSettings',
       'internalLinkTypeUnknownDeepLink'                 => 'InternalLinkType::UnknownDeepLink',
       'internalLinkTypeUnsupportedProxy'                => 'InternalLinkType::UnsupportedProxy',
+      'internalLinkTypeUserPhoneNumber'                 => 'InternalLinkType::UserPhoneNumber',
       'internalLinkTypeVideoChat'                       => 'InternalLinkType::VideoChat',
       'messageLink'                                     => 'MessageLink',
       'messageLinkInfo'                                 => 'MessageLinkInfo',
@@ -1008,6 +1019,10 @@ module TD::Types
       'updateFile'                                      => 'Update::File',
       'updateFileGenerationStart'                       => 'Update::FileGenerationStart',
       'updateFileGenerationStop'                        => 'Update::FileGenerationStop',
+      'updateFileDownloads'                             => 'Update::FileDownloads',
+      'updateFileAddedToDownloads'                      => 'Update::FileAddedToDownloads',
+      'updateFileDownload'                              => 'Update::FileDownload',
+      'updateFileRemovedFromDownloads'                  => 'Update::FileRemovedFromDownloads',
       'updateCall'                                      => 'Update::Call',
       'updateGroupCall'                                 => 'Update::GroupCall',
       'updateGroupCallParticipant'                      => 'Update::GroupCallParticipant',
@@ -1193,6 +1208,7 @@ module TD::Types
     device_token
     dice_stickers
     document
+    downloaded_file_counts
     draft_message
     email_address_authentication_code_info
     emojis
@@ -1200,9 +1216,11 @@ module TD::Types
     encrypted_passport_element
     error
     file
+    file_download
     file_part
     file_type
     formatted_text
+    found_file_downloads
     found_messages
     game
     game_high_score
@@ -1212,6 +1230,8 @@ module TD::Types
     group_call_participant
     group_call_participant_video_info
     group_call_recent_speaker
+    group_call_stream
+    group_call_streams
     group_call_video_quality
     group_call_video_source_group
     hashtags
@@ -1337,6 +1357,7 @@ module TD::Types
     reply_markup
     reset_password_result
     rich_text
+    rtmp_url
     saved_credentials
     scope_notification_settings
     search_messages_filter

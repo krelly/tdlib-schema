@@ -2,7 +2,7 @@
 require 'active_support/all'
 
 AUTOLOAD_BASE_DIR  = 'tdlib/types'
-TD_API_TL_LOCATION = 'td/td/generate/scheme/td_api.tl'
+TD_API_TL_LOCATION = "#{__dir__}/../lib/td/td/generate/scheme/td_api.tl"
 
 def parse_tl_type(type)
   if (vector = type.scan(/[vV]ector<(.*)>/)).length > 0
