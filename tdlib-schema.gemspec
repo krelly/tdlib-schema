@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
   # For more information and examples about making a new gem, checkout our
   # guide at: https://bundler.io/guides/creating_gem.html
 
-  spec.add_runtime_dependency 'dry-struct', '~> 1.0'
-  spec.add_runtime_dependency 'dry-types', '~> 1.0'
+  spec.add_runtime_dependency 'dry-struct', '~> 1.3'
+  spec.add_runtime_dependency 'dry-types', '~> 1.5'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'

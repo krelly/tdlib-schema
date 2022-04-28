@@ -1077,7 +1077,7 @@ module TD::Types
     if object.kind_of?(::Array)
       object.map { |o| wrap(o) }
     elsif object.kind_of?(::Hash)
-      type = object.delete('@type')
+      type = object.delete(:@type)
       
       object.each do |key, val|
         if val.respond_to?(:each)
