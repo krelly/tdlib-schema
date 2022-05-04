@@ -31,7 +31,9 @@ def parse_argument_description(argument, description)
     statements.each do |statement|
       statement.downcase!
 
-      if statement.match?(/(can be null|may be null|can be empty|may be empty|optional|if empty|empty until|empty for|if available)/)
+      if statement.match?(
+        /(can be null|may be null|can be empty|may be empty|optional|if empty|empty until|empty for|if available|pass null)/
+      )
         optional = true
       elsif statement.match?(/(must be non-empty)/)
         optional = false

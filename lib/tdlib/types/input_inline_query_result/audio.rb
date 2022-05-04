@@ -6,7 +6,7 @@ module TD::Types
   # @attr performer [TD::Types::String] Performer of the audio file.
   # @attr audio_url [TD::Types::String] The URL of the audio file.
   # @attr audio_duration [Integer] Audio file duration, in seconds.
-  # @attr reply_markup [TD::Types::ReplyMarkup] The message reply markup; pass null if none.
+  # @attr reply_markup [TD::Types::ReplyMarkup, nil] The message reply markup; pass null if none.
   #   Must be of type {TD::Types::ReplyMarkup::InlineKeyboard} or null.
   # @attr input_message_content [TD::Types::InputMessageContent] The content of the message to be sent.
   #   Must be one of the following types: inputMessageText, inputMessageAudio, inputMessageInvoice,
@@ -17,7 +17,7 @@ module TD::Types
     attribute :performer, TD::Types::String
     attribute :audio_url, TD::Types::String
     attribute :audio_duration, TD::Types::Coercible::Integer
-    attribute :reply_markup, TD::Types::ReplyMarkup
+    attribute :reply_markup, TD::Types::ReplyMarkup.optional.default(nil)
     attribute :input_message_content, TD::Types::InputMessageContent
   end
 end

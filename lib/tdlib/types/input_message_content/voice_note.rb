@@ -4,12 +4,12 @@ module TD::Types
   # @attr voice_note [TD::Types::InputFile] Voice note to be sent.
   # @attr duration [Integer] Duration of the voice note, in seconds.
   # @attr waveform [String] Waveform representation of the voice note, in 5-bit format.
-  # @attr caption [TD::Types::FormattedText] Voice note caption; pass null to use an empty caption;
+  # @attr caption [TD::Types::FormattedText, nil] Voice note caption; pass null to use an empty caption;
   #   0-GetOption("message_caption_length_max") characters.
   class InputMessageContent::VoiceNote < InputMessageContent
     attribute :voice_note, TD::Types::InputFile
     attribute :duration, TD::Types::Coercible::Integer
     attribute :waveform, TD::Types::Coercible::String
-    attribute :caption, TD::Types::FormattedText
+    attribute :caption, TD::Types::FormattedText.optional.default(nil)
   end
 end

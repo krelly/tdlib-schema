@@ -7,11 +7,11 @@ module TD::Types
   #   Always true if the message is forwarded to a secret chat or is local.
   # @attr replace_caption [Boolean] True, if media caption of the message copy needs to be replaced.
   #   Ignored if send_copy is false.
-  # @attr new_caption [TD::Types::FormattedText] New message caption; pass null to copy message without caption.
+  # @attr new_caption [TD::Types::FormattedText, nil] New message caption; pass null to copy message without caption.
   #   Ignored if replace_caption is false.
   class MessageCopyOptions < Base
     attribute :send_copy, TD::Types::Bool
     attribute :replace_caption, TD::Types::Bool
-    attribute :new_caption, TD::Types::FormattedText
+    attribute :new_caption, TD::Types::FormattedText.optional.default(nil)
   end
 end

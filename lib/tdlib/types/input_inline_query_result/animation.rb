@@ -12,7 +12,7 @@ module TD::Types
   # @attr video_duration [Integer] Duration of the video, in seconds.
   # @attr video_width [Integer] Width of the video.
   # @attr video_height [Integer] Height of the video.
-  # @attr reply_markup [TD::Types::ReplyMarkup] The message reply markup; pass null if none.
+  # @attr reply_markup [TD::Types::ReplyMarkup, nil] The message reply markup; pass null if none.
   #   Must be of type {TD::Types::ReplyMarkup::InlineKeyboard} or null.
   # @attr input_message_content [TD::Types::InputMessageContent] The content of the message to be sent.
   #   Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageInvoice,
@@ -27,7 +27,7 @@ module TD::Types
     attribute :video_duration, TD::Types::Coercible::Integer
     attribute :video_width, TD::Types::Coercible::Integer
     attribute :video_height, TD::Types::Coercible::Integer
-    attribute :reply_markup, TD::Types::ReplyMarkup
+    attribute :reply_markup, TD::Types::ReplyMarkup.optional.default(nil)
     attribute :input_message_content, TD::Types::InputMessageContent
   end
 end

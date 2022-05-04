@@ -5,13 +5,13 @@ module TD::Types
   # @attr from_background [Boolean] Pass true if the message is sent from the background.
   # @attr protect_content [Boolean] Pass true if the content of the message must be protected from forwarding and
   #   saving; for bots only.
-  # @attr scheduling_state [TD::Types::MessageSchedulingState] Message scheduling state; pass null to send message
+  # @attr scheduling_state [TD::Types::MessageSchedulingState, nil] Message scheduling state; pass null to send message
   #   immediately.
   #   Messages sent to a secret chat, live location messages and self-destructing messages can't be scheduled.
   class MessageSendOptions < Base
     attribute :disable_notification, TD::Types::Bool
     attribute :from_background, TD::Types::Bool
     attribute :protect_content, TD::Types::Bool
-    attribute :scheduling_state, TD::Types::MessageSchedulingState
+    attribute :scheduling_state, TD::Types::MessageSchedulingState.optional.default(nil)
   end
 end
