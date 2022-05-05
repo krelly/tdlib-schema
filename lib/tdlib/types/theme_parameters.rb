@@ -1,13 +1,13 @@
 module TD::Types
-  # Theme colors for a payment form.
+  # Contains parameters of the app theme.
   #
-  # @attr background_color [Integer] A color of the payment form background in the RGB24 format.
+  # @attr background_color [Integer] A color of the background in the RGB24 format.
   # @attr text_color [Integer] A color of text in the RGB24 format.
   # @attr hint_color [Integer] A color of hints in the RGB24 format.
   # @attr link_color [Integer] A color of links in the RGB24 format.
   # @attr button_color [Integer] A color of the buttons in the RGB24 format.
   # @attr button_text_color [Integer] A color of text on the buttons in the RGB24 format.
-  class PaymentFormTheme < Base
+  class ThemeParameters < Base
     attribute :background_color, TD::Types::Coercible::Integer
     attribute :text_color, TD::Types::Coercible::Integer
     attribute :hint_color, TD::Types::Coercible::Integer

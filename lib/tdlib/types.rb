@@ -93,6 +93,7 @@ module TD::Types
       'userTypeUnknown'                                 => 'UserType::Unknown',
       'botCommand'                                      => 'BotCommand',
       'botCommands'                                     => 'BotCommands',
+      'botMenuButton'                                   => 'BotMenuButton',
       'chatLocation'                                    => 'ChatLocation',
       'animatedChatPhoto'                               => 'AnimatedChatPhoto',
       'chatPhoto'                                       => 'ChatPhoto',
@@ -101,12 +102,14 @@ module TD::Types
       'inputChatPhotoPrevious'                          => 'InputChatPhoto::Previous',
       'inputChatPhotoStatic'                            => 'InputChatPhoto::Static',
       'inputChatPhotoAnimation'                         => 'InputChatPhoto::Animation',
+      'chatPermissions'                                 => 'ChatPermissions',
+      'chatAdministratorRights'                         => 'ChatAdministratorRights',
       'user'                                            => 'User',
+      'botInfo'                                         => 'BotInfo',
       'userFullInfo'                                    => 'UserFullInfo',
       'users'                                           => 'Users',
       'chatAdministrator'                               => 'ChatAdministrator',
       'chatAdministrators'                              => 'ChatAdministrators',
-      'chatPermissions'                                 => 'ChatPermissions',
       'ChatMemberStatus'                                => 'ChatMemberStatus',
       'chatMemberStatusCreator'                         => 'ChatMemberStatus::Creator',
       'chatMemberStatusAdministrator'                   => 'ChatMemberStatus::Administrator',
@@ -227,10 +230,12 @@ module TD::Types
       'keyboardButtonTypeRequestPhoneNumber'            => 'KeyboardButtonType::RequestPhoneNumber',
       'keyboardButtonTypeRequestLocation'               => 'KeyboardButtonType::RequestLocation',
       'keyboardButtonTypeRequestPoll'                   => 'KeyboardButtonType::RequestPoll',
+      'keyboardButtonTypeWebApp'                        => 'KeyboardButtonType::WebApp',
       'keyboardButton'                                  => 'KeyboardButton',
       'InlineKeyboardButtonType'                        => 'InlineKeyboardButtonType',
       'inlineKeyboardButtonTypeUrl'                     => 'InlineKeyboardButtonType::Url',
       'inlineKeyboardButtonTypeLoginUrl'                => 'InlineKeyboardButtonType::LoginUrl',
+      'inlineKeyboardButtonTypeWebApp'                  => 'InlineKeyboardButtonType::WebApp',
       'inlineKeyboardButtonTypeCallback'                => 'InlineKeyboardButtonType::Callback',
       'inlineKeyboardButtonTypeCallbackWithPassword'    => 'InlineKeyboardButtonType::CallbackWithPassword',
       'inlineKeyboardButtonTypeCallbackGame'            => 'InlineKeyboardButtonType::CallbackGame',
@@ -246,6 +251,7 @@ module TD::Types
       'LoginUrlInfo'                                    => 'LoginUrlInfo',
       'loginUrlInfoOpen'                                => 'LoginUrlInfo::Open',
       'loginUrlInfoRequestConfirmation'                 => 'LoginUrlInfo::RequestConfirmation',
+      'webAppInfo'                                      => 'WebAppInfo',
       'messageThreadInfo'                               => 'MessageThreadInfo',
       'RichText'                                        => 'RichText',
       'richTextPlain'                                   => 'RichText::Plain',
@@ -315,6 +321,7 @@ module TD::Types
       'bankCardActionOpenUrl'                           => 'BankCardActionOpenUrl',
       'bankCardInfo'                                    => 'BankCardInfo',
       'address'                                         => 'Address',
+      'themeParameters'                                 => 'ThemeParameters',
       'labeledPricePart'                                => 'LabeledPricePart',
       'invoice'                                         => 'Invoice',
       'orderInfo'                                       => 'OrderInfo',
@@ -326,7 +333,6 @@ module TD::Types
       'inputCredentialsApplePay'                        => 'InputCredentials::ApplePay',
       'inputCredentialsGooglePay'                       => 'InputCredentials::GooglePay',
       'paymentsProviderStripe'                          => 'PaymentsProviderStripe',
-      'paymentFormTheme'                                => 'PaymentFormTheme',
       'paymentForm'                                     => 'PaymentForm',
       'validatedOrderInfo'                              => 'ValidatedOrderInfo',
       'paymentResult'                                   => 'PaymentResult',
@@ -455,6 +461,8 @@ module TD::Types
       'messagePaymentSuccessfulBot'                     => 'MessageContent::PaymentSuccessfulBot',
       'messageContactRegistered'                        => 'MessageContent::ContactRegistered',
       'messageWebsiteConnected'                         => 'MessageContent::WebsiteConnected',
+      'messageWebAppDataSent'                           => 'MessageContent::WebAppDataSent',
+      'messageWebAppDataReceived'                       => 'MessageContent::WebAppDataReceived',
       'messagePassportDataSent'                         => 'MessageContent::PassportDataSent',
       'messagePassportDataReceived'                     => 'MessageContent::PassportDataReceived',
       'messageProximityAlertTriggered'                  => 'MessageContent::ProximityAlertTriggered',
@@ -602,6 +610,9 @@ module TD::Types
       'diceStickersRegular'                             => 'DiceStickers::Regular',
       'diceStickersSlotMachine'                         => 'DiceStickers::SlotMachine',
       'importedContacts'                                => 'ImportedContacts',
+      'attachmentMenuBotColor'                          => 'AttachmentMenuBotColor',
+      'attachmentMenuBot'                               => 'AttachmentMenuBot',
+      'sentWebAppMessage'                               => 'SentWebAppMessage',
       'httpUrl'                                         => 'HttpUrl',
       'InputInlineQueryResult'                          => 'InputInlineQueryResult',
       'inputInlineQueryResultAnimation'                 => 'InputInlineQueryResult::Animation',
@@ -776,6 +787,8 @@ module TD::Types
       'notificationGroupTypeMentions'                   => 'NotificationGroupType::Mentions',
       'notificationGroupTypeSecretChat'                 => 'NotificationGroupType::SecretChat',
       'notificationGroupTypeCalls'                      => 'NotificationGroupType::Calls',
+      'notificationSound'                               => 'NotificationSound',
+      'notificationSounds'                              => 'NotificationSounds',
       'notification'                                    => 'Notification',
       'notificationGroup'                               => 'NotificationGroup',
       'OptionValue'                                     => 'OptionValue',
@@ -811,6 +824,24 @@ module TD::Types
       'userPrivacySettingAllowPeerToPeerCalls'          => 'UserPrivacySetting::AllowPeerToPeerCalls',
       'userPrivacySettingAllowFindingByPhoneNumber'     => 'UserPrivacySetting::AllowFindingByPhoneNumber',
       'accountTtl'                                      => 'AccountTtl',
+      'SessionType'                                     => 'SessionType',
+      'sessionTypeAndroid'                              => 'SessionType::Android',
+      'sessionTypeApple'                                => 'SessionType::Apple',
+      'sessionTypeBrave'                                => 'SessionType::Brave',
+      'sessionTypeChrome'                               => 'SessionType::Chrome',
+      'sessionTypeEdge'                                 => 'SessionType::Edge',
+      'sessionTypeFirefox'                              => 'SessionType::Firefox',
+      'sessionTypeIpad'                                 => 'SessionType::Ipad',
+      'sessionTypeIphone'                               => 'SessionType::Iphone',
+      'sessionTypeLinux'                                => 'SessionType::Linux',
+      'sessionTypeMac'                                  => 'SessionType::Mac',
+      'sessionTypeOpera'                                => 'SessionType::Opera',
+      'sessionTypeSafari'                               => 'SessionType::Safari',
+      'sessionTypeUbuntu'                               => 'SessionType::Ubuntu',
+      'sessionTypeUnknown'                              => 'SessionType::Unknown',
+      'sessionTypeVivaldi'                              => 'SessionType::Vivaldi',
+      'sessionTypeWindows'                              => 'SessionType::Windows',
+      'sessionTypeXbox'                                 => 'SessionType::Xbox',
       'session'                                         => 'Session',
       'sessions'                                        => 'Sessions',
       'connectedWebsite'                                => 'ConnectedWebsite',
@@ -828,10 +859,12 @@ module TD::Types
       'chatReportReasonCustom'                          => 'ChatReportReason::Custom',
       'InternalLinkType'                                => 'InternalLinkType',
       'internalLinkTypeActiveSessions'                  => 'InternalLinkType::ActiveSessions',
+      'internalLinkTypeAttachmentMenuBot'               => 'InternalLinkType::AttachmentMenuBot',
       'internalLinkTypeAuthenticationCode'              => 'InternalLinkType::AuthenticationCode',
       'internalLinkTypeBackground'                      => 'InternalLinkType::Background',
       'internalLinkTypeBotStart'                        => 'InternalLinkType::BotStart',
       'internalLinkTypeBotStartInGroup'                 => 'InternalLinkType::BotStartInGroup',
+      'internalLinkTypeBotAddToChannel'                 => 'InternalLinkType::BotAddToChannel',
       'internalLinkTypeChangePhoneNumber'               => 'InternalLinkType::ChangePhoneNumber',
       'internalLinkTypeChatInvite'                      => 'InternalLinkType::ChatInvite',
       'internalLinkTypeFilterSettings'                  => 'InternalLinkType::FilterSettings',
@@ -862,6 +895,7 @@ module TD::Types
       'fileTypeAnimation'                               => 'FileType::Animation',
       'fileTypeAudio'                                   => 'FileType::Audio',
       'fileTypeDocument'                                => 'FileType::Document',
+      'fileTypeNotificationSound'                       => 'FileType::NotificationSound',
       'fileTypePhoto'                                   => 'FileType::Photo',
       'fileTypeProfilePhoto'                            => 'FileType::ProfilePhoto',
       'fileTypeSecret'                                  => 'FileType::Secret',
@@ -1037,12 +1071,15 @@ module TD::Types
       'updateRecentStickers'                            => 'Update::RecentStickers',
       'updateFavoriteStickers'                          => 'Update::FavoriteStickers',
       'updateSavedAnimations'                           => 'Update::SavedAnimations',
+      'updateSavedNotificationSounds'                   => 'Update::SavedNotificationSounds',
       'updateSelectedBackground'                        => 'Update::SelectedBackground',
       'updateChatThemes'                                => 'Update::ChatThemes',
       'updateLanguagePackStrings'                       => 'Update::LanguagePackStrings',
       'updateConnectionState'                           => 'Update::ConnectionState',
       'updateTermsOfService'                            => 'Update::TermsOfService',
       'updateUsersNearby'                               => 'Update::UsersNearby',
+      'updateAttachmentMenuBots'                        => 'Update::AttachmentMenuBots',
+      'updateWebAppMessageSent'                         => 'Update::WebAppMessageSent',
       'updateReactions'                                 => 'Update::Reactions',
       'updateDiceEmojis'                                => 'Update::DiceEmojis',
       'updateAnimatedEmojiMessageClicked'               => 'Update::AnimatedEmojiMessageClicked',
@@ -1077,7 +1114,7 @@ module TD::Types
     if object.kind_of?(::Array)
       object.map { |o| wrap(o) }
     elsif object.kind_of?(::Hash)
-      type = object.delete(:@type)
+      type = object.delete('@type')
       
       object.each do |key, val|
         if val.respond_to?(:each)
@@ -1113,6 +1150,8 @@ module TD::Types
     animated_emoji
     animation
     animations
+    attachment_menu_bot
+    attachment_menu_bot_color
     audio
     authentication_code_info
     authentication_code_type
@@ -1132,6 +1171,8 @@ module TD::Types
     bot_command
     bot_command_scope
     bot_commands
+    bot_info
+    bot_menu_button
     call
     call_discard_reason
     call_id
@@ -1147,6 +1188,7 @@ module TD::Types
     chat_action
     chat_action_bar
     chat_administrator
+    chat_administrator_rights
     chat_administrators
     chat_event
     chat_event_action
@@ -1306,6 +1348,8 @@ module TD::Types
     notification_group
     notification_group_type
     notification_settings_scope
+    notification_sound
+    notification_sounds
     notification_type
     ok
     option_value
@@ -1328,7 +1372,6 @@ module TD::Types
     passport_suitable_element
     password_state
     payment_form
-    payment_form_theme
     payment_receipt
     payment_result
     payments_provider_stripe
@@ -1364,7 +1407,9 @@ module TD::Types
     seconds
     secret_chat
     secret_chat_state
+    sent_web_app_message
     session
+    session_type
     sessions
     shipping_option
     sponsored_message
@@ -1395,6 +1440,7 @@ module TD::Types
     text_entity
     text_entity_type
     text_parse_mode
+    theme_parameters
     theme_settings
     thumbnail
     thumbnail_format
@@ -1417,6 +1463,7 @@ module TD::Types
     video_chat
     video_note
     voice_note
+    web_app_info
     web_page
     web_page_instant_view
   ].each do |type|

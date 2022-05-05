@@ -3,10 +3,12 @@ module TD::Types
   class InternalLinkType < Base
     %w[
       active_sessions
+      attachment_menu_bot
       authentication_code
       background
       bot_start
       bot_start_in_group
+      bot_add_to_channel
       change_phone_number
       chat_invite
       filter_settings

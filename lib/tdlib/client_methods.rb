@@ -132,7 +132,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Target chat.
   # @param sender_id [TD::Types::MessageSender] Identifier of the sender of the message.
-  # @param reply_to_message_id [Integer] Identifier of the message to reply to or 0.
+  # @param reply_to_message_id [Integer] Identifier of the replied message; 0 if none.
   # @param disable_notification [Boolean] Pass true to disable notification for the message.
   # @param input_message_content [TD::Types::InputMessageContent] The content of the message to be added.
   # @return [TD::Types::Message]
@@ -221,6 +221,17 @@ module TD::ClientMethods
   def add_saved_animation(animation:)
     broadcast('@type'     => 'addSavedAnimation',
               'animation' => animation)
+  end
+  
+  # Adds a new notification sound to the list of saved notification sounds.
+  # The new notification sound is added to the top of the list.
+  # If it is already in the list, its position isn't changed.
+  #
+  # @param sound [TD::Types::InputFile] Notification sound file to add.
+  # @return [TD::Types::NotificationSound]
+  def add_saved_notification_sound(sound:)
+    broadcast('@type' => 'addSavedNotificationSound',
+              'sound' => sound)
   end
   
   # Adds a new sticker to a set; for bots only.
@@ -312,6 +323,18 @@ module TD::ClientMethods
               'shipping_query_id' => shipping_query_id,
               'shipping_options'  => shipping_options,
               'error_message'     => error_message)
+  end
+  
+  # Sets the result of interaction with a web app and sends corresponding message on behalf of the user to the chat
+  #   from which the query originated; for bots only.
+  #
+  # @param web_app_query_id [TD::Types::String] Identifier of the web app query.
+  # @param result [TD::Types::InputInlineQueryResult] The result of the query.
+  # @return [TD::Types::SentWebAppMessage]
+  def answer_web_app_query(web_app_query_id:, result:)
+    broadcast('@type'            => 'answerWebAppQuery',
+              'web_app_query_id' => web_app_query_id,
+              'result'           => result)
   end
   
   # Bans a member in a chat.
@@ -660,6 +683,15 @@ module TD::ClientMethods
               'secret_chat_id' => secret_chat_id)
   end
   
+  # Informs TDLib that a previously opened web app was closed.
+  #
+  # @param web_app_launch_id [Integer] Identifier of web app launch, received from openWebApp.
+  # @return [TD::Types::Ok]
+  def close_web_app(web_app_launch_id:)
+    broadcast('@type'             => 'closeWebApp',
+              'web_app_launch_id' => web_app_launch_id)
+  end
+  
   # Confirms QR code authentication on another device.
   # Returns created session on success.
   #
@@ -839,7 +871,7 @@ module TD::ClientMethods
   # Creates a video chat (a group call bound to a chat).
   # Available only for basic groups, supergroups and channels; requires can_manage_video_chats rights.
   #
-  # @param chat_id [Integer] Chat identifier, in which the video chat will be created.
+  # @param chat_id [Integer] Identifier of a chat in which the video chat will be created.
   # @param title [TD::Types::String, nil] Group call title; if empty, chat title will be used.
   # @param start_date [Integer] Point in time (Unix timestamp) when the group call is supposed to be started by an
   #   administrator; 0 to start the video chat immediately.
@@ -889,9 +921,9 @@ module TD::ClientMethods
               'creator_user_id' => creator_user_id)
   end
   
-  # Deletes a chat along with all messages in the corresponding chat for all chat members; requires owner privileges.
+  # Deletes a chat along with all messages in the corresponding chat for all chat members.
   # For group chats this will release the username and remove all members.
-  # Chats with more than 1000 members can't be deleted using this method.
+  # Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat.
   #
   # @param chat_id [Integer] Chat identifier.
   # @return [TD::Types::Ok]
@@ -1544,6 +1576,15 @@ module TD::ClientMethods
   def get_attached_sticker_sets(file_id:)
     broadcast('@type'   => 'getAttachedStickerSets',
               'file_id' => file_id)
+  end
+  
+  # Returns information about a bot that can be added to attachment menu.
+  #
+  # @param bot_user_id [Integer] Bot's user identifier.
+  # @return [TD::Types::AttachmentMenuBot]
+  def get_attachment_menu_bot(bot_user_id:)
+    broadcast('@type'       => 'getAttachmentMenuBot',
+              'bot_user_id' => bot_user_id)
   end
   
   # Returns the current authorization state; this is an offline request.
@@ -2446,7 +2487,7 @@ module TD::ClientMethods
   # @param width [Integer] Map width in pixels before applying scale; 16-1024.
   # @param height [Integer] Map height in pixels before applying scale; 16-1024.
   # @param scale [Integer] Map scale; 1-3.
-  # @param chat_id [Integer] Identifier of a chat, in which the thumbnail will be shown.
+  # @param chat_id [Integer] Identifier of a chat in which the thumbnail will be shown.
   #   Use 0 if unknown.
   # @return [TD::Types::File]
   def get_map_thumbnail_file(location:, zoom:, width:, height:, scale:, chat_id:)
@@ -2475,6 +2516,15 @@ module TD::ClientMethods
   # @return [TD::Types::User]
   def get_me
     broadcast('@type' => 'getMe')
+  end
+  
+  # Returns menu button set by the bot for the given user; for bots only.
+  #
+  # @param user_id [Integer] Identifier of the user or 0 to get the default menu button.
+  # @return [TD::Types::BotMenuButton]
+  def get_menu_button(user_id:)
+    broadcast('@type'   => 'getMenuButton',
+              'user_id' => user_id)
   end
   
   # Returns information about a message.
@@ -2770,7 +2820,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Chat identifier of the Invoice message.
   # @param message_id [Integer] Message identifier.
-  # @param theme [TD::Types::PaymentFormTheme, nil] Preferred payment form theme; pass null to use the default theme.
+  # @param theme [TD::Types::ThemeParameters, nil] Preferred payment form theme; pass null to use the default theme.
   # @return [TD::Types::PaymentForm]
   def get_payment_form(chat_id:, message_id:, theme: nil)
     broadcast('@type'      => 'getPaymentForm',
@@ -2963,6 +3013,24 @@ module TD::ClientMethods
     broadcast('@type' => 'getSavedAnimations')
   end
   
+  # Returns saved notification sound by its identifier.
+  # Returns a 404 error if there is no saved notification sound with the specified identifier.
+  #
+  # @param notification_sound_id [Integer] Identifier of the notification sound.
+  # @return [TD::Types::NotificationSounds]
+  def get_saved_notification_sound(notification_sound_id:)
+    broadcast('@type'                 => 'getSavedNotificationSound',
+              'notification_sound_id' => notification_sound_id)
+  end
+  
+  # Returns list of saved notification sounds.
+  # If a sound isn't in the list, then default sound needs to be used.
+  #
+  # @return [TD::Types::NotificationSounds]
+  def get_saved_notification_sounds
+    broadcast('@type' => 'getSavedNotificationSounds')
+  end
+  
   # Returns saved order information.
   # Returns a 404 error if there is no saved order information.
   #
@@ -3150,6 +3218,16 @@ module TD::ClientMethods
               'text'  => text)
   end
   
+  # Converts a themeParameters object to corresponding JSON-serialized string.
+  # Can be called synchronously.
+  #
+  # @param theme [TD::Types::ThemeParameters] Theme parameters to convert to JSON.
+  # @return [TD::Types::Text]
+  def get_theme_parameters_json_string(theme:)
+    broadcast('@type' => 'getThemeParametersJsonString',
+              'theme' => theme)
+  end
+  
   # Returns a list of frequently used chats.
   # Supported only if the chat info database is enabled.
   #
@@ -3234,6 +3312,19 @@ module TD::ClientMethods
   def get_video_chat_rtmp_url(chat_id:)
     broadcast('@type'   => 'getVideoChatRtmpUrl',
               'chat_id' => chat_id)
+  end
+  
+  # Returns an HTTPS URL of a web app to open after keyboardButtonTypeWebApp button is pressed.
+  #
+  # @param bot_user_id [Integer] Identifier of the target bot.
+  # @param url [TD::Types::String] The URL from the {TD::Types::KeyboardButtonType::WebApp} button.
+  # @param theme [TD::Types::ThemeParameters, nil] Preferred web app theme; pass null to use the default theme.
+  # @return [TD::Types::HttpUrl]
+  def get_web_app_url(bot_user_id:, url:, theme: nil)
+    broadcast('@type'       => 'getWebAppUrl',
+              'bot_user_id' => bot_user_id,
+              'url'         => url,
+              'theme'       => theme)
   end
   
   # Returns an instant view version of a web page if available.
@@ -3436,6 +3527,29 @@ module TD::ClientMethods
     broadcast('@type'      => 'openMessageContent',
               'chat_id'    => chat_id,
               'message_id' => message_id)
+  end
+  
+  # Informs TDLib that a web app is being opened from attachment menu, a botMenuButton button, an
+  #   internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button.
+  # For each bot, a confirmation alert about data sent to the bot must be shown once.
+  #
+  # @param chat_id [Integer] Identifier of the chat in which the web app is opened.
+  #   Web apps can be opened only in private chats for now.
+  # @param bot_user_id [Integer] Identifier of the bot, providing the web app.
+  # @param url [TD::Types::String] The URL from an {TD::Types::InlineKeyboardButtonType::WebApp} button, a
+  #   {TD::Types::BotMenuButton} button, or an {TD::Types::InternalLinkType::AttachmentMenuBot} link, or an empty string
+  #   otherwise.
+  # @param theme [TD::Types::ThemeParameters, nil] Preferred web app theme; pass null to use the default theme.
+  # @param reply_to_message_id [Integer] Identifier of the replied message for the message sent by the web app; 0 if
+  #   none.
+  # @return [TD::Types::WebAppInfo]
+  def open_web_app(chat_id:, bot_user_id:, url:, theme: nil, reply_to_message_id:)
+    broadcast('@type'               => 'openWebApp',
+              'chat_id'             => chat_id,
+              'bot_user_id'         => bot_user_id,
+              'url'                 => url,
+              'theme'               => theme,
+              'reply_to_message_id' => reply_to_message_id)
   end
   
   # Optimizes storage usage, i.e.
@@ -3793,6 +3907,15 @@ module TD::ClientMethods
               'animation' => animation)
   end
   
+  # Removes a notification sound from the list of saved notification sounds.
+  #
+  # @param notification_sound_id [Integer] Identifier of the notification sound.
+  # @return [TD::Types::Ok]
+  def remove_saved_notification_sound(notification_sound_id:)
+    broadcast('@type'                 => 'removeSavedNotificationSound',
+              'notification_sound_id' => notification_sound_id)
+  end
+  
   # Removes a sticker from the set to which it belongs; for bots only.
   # The sticker set must have been created by the bot.
   #
@@ -3991,7 +4114,7 @@ module TD::ClientMethods
   end
   
   # Resets all notification settings to their default values.
-  # By default, all chats are unmuted, the sound is set to "default" and message previews are shown.
+  # By default, all chats are unmuted and message previews are shown.
   #
   # @return [TD::Types::Ok]
   def reset_all_notification_settings
@@ -4389,6 +4512,7 @@ module TD::ClientMethods
   end
   
   # Searches a user by their phone number.
+  # Returns a 404 error if the user can't be found.
   #
   # @param phone_number [TD::Types::String] Phone number to search for.
   # @return [TD::Types::User]
@@ -4414,7 +4538,7 @@ module TD::ClientMethods
               'parameter'   => parameter)
   end
   
-  # Sends debug information for a call.
+  # Sends debug information for a call to Telegram servers.
   #
   # @param call_id [Integer] Call identifier.
   # @param debug_information [TD::Types::String] Debug information in application-specific format.
@@ -4423,6 +4547,18 @@ module TD::ClientMethods
     broadcast('@type'             => 'sendCallDebugInformation',
               'call_id'           => call_id,
               'debug_information' => debug_information)
+  end
+  
+  # Sends log file for a call to Telegram servers.
+  #
+  # @param call_id [Integer] Call identifier.
+  # @param log_file [TD::Types::InputFile] Call log file.
+  #   Only {TD::Types::InputFile::Local} and {TD::Types::InputFile::Generated} are supported.
+  # @return [TD::Types::Ok]
+  def send_call_log(call_id:, log_file:)
+    broadcast('@type'    => 'sendCallLog',
+              'call_id'  => call_id,
+              'log_file' => log_file)
   end
   
   # Sends a call rating.
@@ -4501,7 +4637,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Target chat.
   # @param message_thread_id [Integer] If not 0, a message thread identifier in which the message will be sent.
-  # @param reply_to_message_id [Integer] Identifier of a message to reply to or 0.
+  # @param reply_to_message_id [Integer] Identifier of a replied message; 0 if none.
   # @param options [TD::Types::MessageSendOptions, nil] Options to be used to send the message; pass null to use
   #   default options.
   # @param query_id [Integer] Identifier of the inline query.
@@ -4527,7 +4663,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Target chat.
   # @param message_thread_id [Integer] If not 0, a message thread identifier in which the message will be sent.
-  # @param reply_to_message_id [Integer] Identifier of the message to reply to or 0.
+  # @param reply_to_message_id [Integer] Identifier of the replied message; 0 if none.
   # @param options [TD::Types::MessageSendOptions, nil] Options to be used to send the message; pass null to use
   #   default options.
   # @param reply_markup [TD::Types::ReplyMarkup, nil] Markup for replying to the message; pass null if none; for bots
@@ -4552,7 +4688,7 @@ module TD::ClientMethods
   #
   # @param chat_id [Integer] Target chat.
   # @param message_thread_id [Integer] If not 0, a message thread identifier in which the messages will be sent.
-  # @param reply_to_message_id [Integer] Identifier of a message to reply to or 0.
+  # @param reply_to_message_id [Integer] Identifier of a replied message; 0 if none.
   # @param options [TD::Types::MessageSendOptions, nil] Options to be used to send the messages; pass null to use
   #   default options.
   # @param input_message_contents [Array<TD::Types::InputMessageContent>] Contents of messages to be sent.
@@ -4630,6 +4766,20 @@ module TD::ClientMethods
     broadcast('@type'        => 'sendPhoneNumberVerificationCode',
               'phone_number' => phone_number,
               'settings'     => settings)
+  end
+  
+  # Sends data received from a keyboardButtonTypeWebApp web app to a bot.
+  #
+  # @param bot_user_id [Integer] Identifier of the target bot.
+  # @param button_text [TD::Types::String] Text of the {TD::Types::KeyboardButtonType::WebApp} button, which opened the
+  #   web app.
+  # @param data [TD::Types::String] Received data.
+  # @return [TD::Types::Ok]
+  def send_web_app_data(bot_user_id:, button_text:, data:)
+    broadcast('@type'       => 'sendWebAppData',
+              'bot_user_id' => bot_user_id,
+              'button_text' => button_text,
+              'data'        => data)
   end
   
   # Changes the period of inactivity after which the account of the current user will automatically be deleted.
@@ -4825,11 +4975,11 @@ module TD::ClientMethods
   
   # Changes the message TTL in a chat.
   # Requires can_delete_messages administrator right in basic groups, supergroups and channels Message TTL can't be
-  #   changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
+  #   changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram)..
   #
   # @param chat_id [Integer] Chat identifier.
-  # @param ttl [Integer] New TTL value, in seconds; must be one of 0, 86400, 7 * 86400, or 31 * 86400 unless the chat
-  #   is secret.
+  # @param ttl [Integer] New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and
+  #   be divisible by 86400.
   # @return [TD::Types::Ok]
   def set_chat_message_ttl(chat_id:, ttl:)
     broadcast('@type'   => 'setChatMessageTtl',
@@ -4965,6 +5115,26 @@ module TD::ClientMethods
   def set_database_encryption_key(new_encryption_key:)
     broadcast('@type'              => 'setDatabaseEncryptionKey',
               'new_encryption_key' => new_encryption_key)
+  end
+  
+  # Sets default administrator rights for adding the bot to channel chats; for bots only.
+  #
+  # @param default_channel_administrator_rights [TD::Types::ChatAdministratorRights, nil] Default administrator rights
+  #   for adding the bot to channels; may be null.
+  # @return [TD::Types::Ok]
+  def set_default_channel_administrator_rights(default_channel_administrator_rights: nil)
+    broadcast('@type'                                => 'setDefaultChannelAdministratorRights',
+              'default_channel_administrator_rights' => default_channel_administrator_rights)
+  end
+  
+  # Sets default administrator rights for adding the bot to basic group and supergroup chats; for bots only.
+  #
+  # @param default_group_administrator_rights [TD::Types::ChatAdministratorRights, nil] Default administrator rights
+  #   for adding the bot to basic group and supergroup chats; may be null.
+  # @return [TD::Types::Ok]
+  def set_default_group_administrator_rights(default_group_administrator_rights: nil)
+    broadcast('@type'                              => 'setDefaultGroupAdministratorRights',
+              'default_group_administrator_rights' => default_group_administrator_rights)
   end
   
   # Informs TDLib on a file generation progress.
@@ -5112,6 +5282,17 @@ module TD::ClientMethods
   def set_log_verbosity_level(new_verbosity_level:)
     broadcast('@type'               => 'setLogVerbosityLevel',
               'new_verbosity_level' => new_verbosity_level)
+  end
+  
+  # Sets menu button for the given user or for all users; for bots only.
+  #
+  # @param user_id [Integer] Identifier of the user or 0 to set menu button for all users.
+  # @param menu_button [TD::Types::BotMenuButton] New menu button.
+  # @return [TD::Types::Ok]
+  def set_menu_button(user_id:, menu_button:)
+    broadcast('@type'       => 'setMenuButton',
+              'user_id'     => user_id,
+              'menu_button' => menu_button)
   end
   
   # Changes chosen reaction for a message.
@@ -5470,6 +5651,19 @@ module TD::ClientMethods
   def toggle_all_downloads_are_paused(are_paused:)
     broadcast('@type'      => 'toggleAllDownloadsArePaused',
               'are_paused' => are_paused)
+  end
+  
+  # Adds or removes a bot to attachment menu.
+  # Bot can be added to attachment menu, only if userTypeBot.can_be_added_to_attachment_menu == true.
+  #
+  # @param bot_user_id [Integer] Bot's user identifier.
+  # @param is_added [Boolean] Pass true to add the bot to attachment menu; pass false to remove the bot from attachment
+  #   menu.
+  # @return [TD::Types::Ok]
+  def toggle_bot_is_added_to_attachment_menu(bot_user_id:, is_added:)
+    broadcast('@type'       => 'toggleBotIsAddedToAttachmentMenu',
+              'bot_user_id' => bot_user_id,
+              'is_added'    => is_added)
   end
   
   # Changes the value of the default disable_notification parameter, used when a message is sent to a chat.

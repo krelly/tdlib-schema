@@ -8,8 +8,7 @@ module TD::Types
   # @attr sponsor_chat_info [TD::Types::ChatInviteLinkInfo, nil] Information about the sponsor chat; may be null unless
   #   sponsor_chat_id == 0.
   # @attr link [TD::Types::InternalLinkType, nil] An internal link to be opened when the sponsored message is clicked;
-  #   may be null.
-  #   If null, the sponsor chat needs to be opened instead.
+  #   may be null if the sponsor chat needs to be opened instead.
   # @attr content [TD::Types::MessageContent] Content of the message.
   #   Currently, can be only of the type messageText.
   class SponsoredMessage < Base

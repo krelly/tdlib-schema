@@ -79,12 +79,15 @@ module TD::Types
       recent_stickers
       favorite_stickers
       saved_animations
+      saved_notification_sounds
       selected_background
       chat_themes
       language_pack_strings
       connection_state
       terms_of_service
       users_nearby
+      attachment_menu_bots
+      web_app_message_sent
       reactions
       dice_emojis
       animated_emoji_message_clicked
