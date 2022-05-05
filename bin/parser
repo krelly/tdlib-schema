@@ -236,6 +236,9 @@ module TD::Types
     
     def to_hash
       { '@type' => LOOKUP_TABLE.key(self.class.name.sub('TD::Types::', '')) }.merge(super)
+      # TODO: implement more efficient way to retrieve type, 
+      # but using LOOKUP_TABLE_INVERTED seems to increase memory usage significantly
+      # { '@type' => LOOKUP_TABLE_INVERTED[self.class.name.sub('TD::Types::', '')].to_s }.merge(super)
     end
     alias_method :to_h, :to_hash
     
@@ -332,10 +335,10 @@ lt_max_length = @lookup_table.max_by { |k,_| k.length }[0].length
 lookup_table = @lookup_table.map do |k,v|
   indent = " " * (lt_max_length - k.length + 1)
 
-  "'#{k}'#{indent}=> '#{v}'"
+  "#{k}:#{indent} '#{v}'"
 end
 
-klass = <<-RUBY
+klass = <<~RUBY
 require 'dry-struct'
 require 'dry-types'
 
@@ -345,6 +348,8 @@ module TD::Types
   LOOKUP_TABLE = {
       #{lookup_table.join(",\n      ")}
   }.freeze
+
+  # LOOKUP_TABLE_INVERTED = LOOKUP_TABLE.invert.freeze
   
   module_function
   
@@ -354,7 +359,7 @@ module TD::Types
     if object.kind_of?(::Array)
       object.map { |o| wrap(o) }
     elsif object.kind_of?(::Hash)
-      type = object.delete('@type')
+      type = object.delete(:@type)
       
       object.each do |key, val|
         if val.respond_to?(:each)
@@ -366,7 +371,7 @@ module TD::Types
         return object
       end
       
-      if (klass = LOOKUP_TABLE[type])
+      if (klass = LOOKUP_TABLE[type.to_sym])
         const_get(klass).new(object)
       else
         raise ArgumentError.new("Can't find class for \#{type}")

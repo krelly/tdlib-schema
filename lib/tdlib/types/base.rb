@@ -16,6 +16,7 @@ module TD::Types
     
     def to_hash
       { '@type' => LOOKUP_TABLE.key(self.class.name.sub('TD::Types::', '')) }.merge(super)
+      # { '@type' => LOOKUP_TABLE_INVERTED[self.class.name.sub('TD::Types::', '')].to_s }.merge(super)
     end
     alias_method :to_h, :to_hash
     
